@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "start": "while true do npm start done"
+        "start": "npm start"
     },
     "dependencies": {
         "cors": "latest",
