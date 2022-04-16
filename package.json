@@ -1,0 +1,24 @@
+{
+    "name": "arras",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "while true do npm start done"
+    },
+    "dependencies": {
+        "cors": "latest",
+        "discord.js": "12.5.3",
+        "express": "latest",
+        "express-fingerprint": "latest",
+        "express-ws": "latest",
+        "forwarded-for": "latest",
+        "google-closure-library": "^20220104.0.0",
+        "net": "^1.0.2",
+        "node-fetch": "^2.6.7",
+        "ws": "^8.5.0"
+    },
+    "engines": {
+        "node": "17.x"
+    },
+    "license": "GPL-3.0"
+}

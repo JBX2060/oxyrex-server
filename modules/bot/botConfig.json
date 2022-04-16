@@ -1,0 +1,23 @@
+{
+    "logs": {
+        "kick": "963084087281737728",
+        "status": "963084087281737728",
+        "player": "963084087281737728",
+        "error": "963084087281737728",
+        "command": "963084087281737728",
+        "chat": "963084087281737728",
+        "achievementDatabase": "963084087281737728"
+    },
+    "permissions": {
+        "760128808094793738": 3
+    },
+    "rolesThatCanJoinBeta": {
+        "912447317880209458": "Staff Member",
+        "898446232442265601": "Beta Tester",
+        "898444342140735498": "Developer",
+        "919283439931379763": "Co-Developer",
+        "898443946257154128": "Administrator"
+    },
+    "token": "OTYzMDY1ODYzMTYwODg1MjU5.YlQq-g.6otm9BC3CawBSHb2pWjkSMUnqds",
+    "prefix": "."
+}
