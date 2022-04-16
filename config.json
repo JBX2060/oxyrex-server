@@ -70,7 +70,7 @@
     "MIN_DAMAGE": 1,
     "FOOD_AMOUNT": 0.6,
     "SKILL_BOOST": 5,
-    "BOTS": 9,
+    "BOTS": 5,
     "GLASS_HEALTH_FACTOR": 2,
     "SPECIAL_BOSS_SPAWNS": false,
     "MOTHERSHIP_LOOP": false,
@@ -94,7 +94,6 @@
     "TOKENS": [
         ["TOKEN_DEV_9YAghpcBdTXMHK12_DEV_TOKEN", "760128808094793738", "$000000", 3, "PMagic#1507"],
         ["User@001", "566088700157493249", "$000001", 3, "JBX2010#1349"],
-        ["fanwin", "69420", "$000002", 1, "Windows#8964"]
-
+      ["haha_wooord", "695536041175810118", "$000001", 3, "Nikita E.#1674"]
     ]
 }
