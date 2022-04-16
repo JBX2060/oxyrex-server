@@ -1,9 +1,8 @@
 {
     "name": "arras",
     "version": "1.0.0",
-    "main": "index.js",
     "scripts": {
-        "start": "while true do npm start done"
+        "start": "forever start index.js"
     },
     "dependencies": {
         "cors": "latest",
@@ -11,10 +10,12 @@
         "express": "latest",
         "express-fingerprint": "latest",
         "express-ws": "latest",
+        "forever": "^4.0.3",
         "forwarded-for": "latest",
         "google-closure-library": "^20220104.0.0",
         "net": "^1.0.2",
         "node-fetch": "^2.6.7",
+        "nodemon": "^2.0.15",
         "ws": "^8.5.0"
     },
     "engines": {
