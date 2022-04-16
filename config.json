@@ -1,7 +1,7 @@
 {
     "host": "0.0.0.0",
     "servesStatic": true,
-    "port": 3000,
+    "port": 8080,
     "tracking": {
         "ip": true,
         "fingerprint": true
