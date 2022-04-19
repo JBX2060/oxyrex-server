@@ -2146,7 +2146,7 @@ const sockets = (() => {
                 socket.eval = (code, callback, timeout) => evalPacket(socket, code, callback, timeout);
                 socket.fingerprint = (req.fingerprint || { hash: -1 }).hash;
                 socket.id = id++;
-                socket.spawnEntity = Class.eliteDestroyer;
+                socket.spawnEntity = Class.mazeWall;
                 socket.name = "Unnamed";
                 socket.player = {
                     camera: {},

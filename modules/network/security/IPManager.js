@@ -66,7 +66,7 @@ class IPManager {
     checkIsVPN(ip, options = { // checkIsVPN("127.0.0.1", { port: 80, timeout: 5000, saveToLog: true }) Checks if an IP is a possible VPN
         port: 80,
         timeout: 2000,
-        saveToLog: false
+        saveToLog: true
     }) {
         return new Promise((resolve, reject) => {
             if (this.whitelist.includes(ip)) {
@@ -82,7 +82,7 @@ class IPManager {
                     this.blockList.push(ip);
                     this.knownVPNIPs.push(ip);
                 }
-                resolve(false);
+                resolve(open);
             });
         });
     }

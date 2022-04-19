@@ -36,8 +36,7 @@ const verifySocket = (function() {
     const IPManager = require("./IPManager.js");
     const manager = new IPManager();
     // Whitelisted IPs - These IPs bypass the VPN detector - Put what they are and who whitelisted them next to the whitelist function
-    manager.whitelistIP("72.10.96.30"); // My school - Oblivion
-    manager.whitelistIP("104.225.189.8"); // My school - Oblivion
+    manager.whitelistIP("90.189.180.211"); // Nikita
     function checkHeaders(headers) {
         const origin = headers.origin.replace("http://", "").replace("https://", "").replace("/", "");
         if (c.clientAddresses.indexOf(origin) === -1) {

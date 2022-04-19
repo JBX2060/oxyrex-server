@@ -2,8 +2,9 @@
     "name": "arras",
     "version": "1.0.0",
     "scripts": {
+        "start": "forever stopall && forever start index.js",
         "stop": "forever stopall",
-        "start": "npm run stop && forever start index.js"
+        "runonly": "forever stopall && node ."
     },
     "dependencies": {
         "cors": "latest",
