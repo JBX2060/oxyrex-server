@@ -2,8 +2,8 @@
     "name": "arras",
     "version": "1.0.0",
     "scripts": {
-        "start": "forever stopall && forever start index.js",
-        "stop": "forever stopall",
+        "start": "pm2 delete Oxyrex || : && pm2 start index.js --watch -i 1 --name 'Oxyrex' && pm2 log",
+        "stop": "forever stopall && pm2 stop all",
         "runonly": "forever stopall && node ."
     },
     "dependencies": {
