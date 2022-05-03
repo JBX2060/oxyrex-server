@@ -22,6 +22,7 @@ const escort = (function() {
         o.team = -1;
         o.color = 10;
         o.define(Class.mothership);
+        o.isBot = true
         o.skill.set([9, 9, 9, 9, 9, 9, 9, 9, 9, 9]);
         o.name = ["Liberty", "Transylvania"][motherships.length] || "Escort Ship";
         o.color = [140, 145][motherships.length] || 10;
@@ -33,9 +34,13 @@ const escort = (function() {
                 clearInterval(loopInterval);
                 sockets.broadcast("All Motherships have been lost!");
                 setTimeout(() => {
+                  if (!global.arenaClosed) {
                     sockets.broadcast("The Nest enemies have won the game!");
                     setTimeout(closeArena, 2500);
+                  }
                 }, 2500);
+            
+            
             }
         }
         motherships.push(o);
@@ -61,7 +66,7 @@ const escort = (function() {
             }
             enemies.sentries[0] ++;
         } else if (enemies.crashers[0] < enemies.crashers[1]) {
-            o.define(ran.choose([Class.crasher, Class.fragment, Class.dartCrasher, Class.teslaCrasher]));
+            o.define(ran.choose([Class.crasher, Class.fragment, Class.dartCrasher]));
             o.onDead = function() {
                 enemies.crashers[0] --;
             }

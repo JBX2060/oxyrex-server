@@ -6,7 +6,21 @@
         "ip": true,
         "fingerprint": true
     },
-    "clientAddresses": ["oxyrex.io", "6ibui.glitch.me", "www.oxyrex.io", "oxyrex.netlify.app", "woomy.arras.cx", "oxyrex.surge.sh", "oxyrex-client.liyongxin.repl.co", "oxys.erws.ga", "somethingidk.liyongxin.repl.co", "localhost:8080", "localhost:3000"],
+    "clientAddresses": [
+      "oxyrex.io", 
+      "idk-wut-it-is.glitch.me",
+      "6ibui.glitch.me", 
+      "www.oxyrex.io", 
+      "oxyrex.netlify.app",
+      "oxyrex-dev.netlify.app",
+      "woomy.arras.cx", 
+      "oxyrex.surge.sh", 
+      "oxyrex-client.liyongxin.repl.co", 
+      "oxys.erws.ga", 
+      "somethingidk.liyongxin.repl.co", 
+      "localhost:8080", 
+      "localhost:3000"
+    ],
     "networkUpdateFactor": 24,
     "socketWarningLimit": 5,
     "tabLimit": 2,
@@ -24,7 +38,7 @@
     "DO_BASE_DAMAGE": true,
     "WIDTH": 6500,
     "HEIGHT": 6500,
-    "MODE": "ffa",
+    "MODE": "tdm",
     "TEAMS": 8,
     "RANDOM_COLORS": false,
     "ARENA_TYPE": "rect",
@@ -75,7 +89,7 @@
     "BOTS": 0,
     "GLASS_HEALTH_FACTOR": 2,
     "SPECIAL_BOSS_SPAWNS": false,
-    "MOTHERSHIP_LOOP": false,
+    "MOTHERSHIP_LOOP": true,
     "SPACE_PHYSICS": false,
     "SPACE_MODE": false,
     "MAZE": false,
@@ -98,8 +112,14 @@
       ["TOKEN_ycEruD9w9Quu^n(K,9Tvlr@JA#]DhpO)_TOKEN", "566088700157493249", "$000000", 3, "JBX2010#1349"],
       ["TOKEN_PH'cZ$.9dg{jqR^gY*ZIZ,]cdwevspXi_TOKEN", "695536041175810118", "$000000", 3, "Nikita E.#1674"],
       ["TOKEN_.9yC7eYMA76}h1x5mE*RlUev#HH3Q#nO_TOKEN", "757433752652611686", "$000000", 3, "urmom.pov#3666"], 
-      ["TOKEN_vL}dx%gdsg^dsg!56x3Jh8;%KKI^sfg^&3BV_TOKEN", "670757057267236864", "$000000", 1, "dip#5574"],
-      ["TOKEN_vL}TiX&JJI%p8xQJh8;%KKI^eH&o1vBV_TOKEN", "965367414630010950", "$000000", 1, "Tsukara#6942"],
-      ["TOKEN_Zdk$9lL2Fe3fOz4XVjf3!/S,L,$^FvSv_TOKEN", "834146510752710696", "$000000", 3, "CrazyCoder9#0663"]
+      ["TOKEN_(D[Y^F}yVV%EukMQv8(.KH&#tsb82,b})_TOKEN", "516089426309545986", "$000000", 3, "TheExecutionist#0314"],
+     ["TOKEN_vL}dx%gdsg^dsg!56x3Jh8;%KKI^sfg^&3BV_TOKEN", "670757057267236864", "#fff959", 1, "dip#5574"],
+      ["TOKEN_vL}TiX&JJI%p8xQJh8;%KKI^eH&o1vBV_TOKEN", "965367414630010950", "#fff959", 1, "Tsukara#6942"],
+      ["TOKEN_Zdk$9lL2Fe3fOz4XVjf3!/S,L,$^FvSv_TOKEN", "834146510752710696", "$000000", 3, "CrazyCoder9#0663"],
+      ["TOKEN_sH^Yhn&^HYhn87&NBNT(&769_TOKEN", "834146510752710696", "$000000", 3, "MF#8961"],
+      ["TOKEN_M4)CGD(m}^H6XmfmnH_TOKEN", "846413267160793148", "$000000", 3, "Absolute Everything#5995"],
+      ["TOKEN_/1!@XCVlk63PrEE9NHruUTz{m8_TOKEN", "943757085349408791", "#fff959", 1, "TaskMaster#5615"],
+      ["TOKEN_l8$ZEB[9!o)8sscAx#9@nm&0(J;^]K%$_TOKEN", "69", "#fff959", 1, "PMagic#8328"]
     ]
+  
 }

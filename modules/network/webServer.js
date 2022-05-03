@@ -162,8 +162,8 @@ server.post("/patch/lib/definitions.js", function(request, response) {
     }
     if (c.TOKENS.findIndex(entry => entry[0] === request.body.key && entry[3] === 3) === -1) {
         if (!unauths[request.fingerprint.hash]) {
-            unauths[request.fingerprint.hash] = 1;
-        } else {
+            unauths[request.fingerprint.hash] = 1; 
+        } else { 
             unauths[request.fingerprint.hash] ++;
         }
         return response.send("Unauthorized");

@@ -79,9 +79,9 @@ const bossRush = (function() {
             let o = new Entity(room.randomType("boss"));
             o.define(boss);
             o.controllers.push(new ioTypes.bossRushAI(o));
-            if (o.classSize < 35) {
+          
                 o.controllers.push(new ioTypes.pathFind(o));
-            }
+            
             o.team = -100;
             o.onDead = function() {
                 bosses --;

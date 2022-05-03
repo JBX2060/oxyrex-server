@@ -445,7 +445,7 @@ const maintainloop = (() => {
             } else if (!census.miniboss) timer++;
         };
     })();
-    let spawnSanctuaries = (() => {
+let spawnSanctuaries = (() => {
         let timer = 0;
         let boss = (() => {
             let i = 0,
@@ -463,14 +463,7 @@ const maintainloop = (() => {
                 o.onDead = () => {
                     setTimeout(() => {
                         let n = new Entity(o);
-                      switch(ran.chooseChance(1, 1)) {
-                        case 0:
                         n.define(Class[o.spawnOnDeath]);
-                          break
-                        case 1:
-                          n.define(Class[o.secondarySpawnOnDeath]);
-                          break
-                      }
                         n.team = o.team;
                         n.name = ran.chooseBossName("all", 1)[0];
                         sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + o.label + "!");
@@ -510,7 +503,7 @@ const maintainloop = (() => {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
                 let choice = [
-                    [[Class.eggSanctuary, Class.squareSanctuary, Class.triangleSanctuary][ran.chooseChance(5000, 2, 0.5)]],
+                    [[Class.eggSanctuary, Class.squareSanctuary, Class.triangleSanctuary][ran.chooseChance(5, 4, 3)]],
                     1 + Math.floor(Math.random()) | 0, "a"
                 ];
                 boss.prepareToSpawn(...choice);
@@ -521,7 +514,7 @@ const maintainloop = (() => {
     })();
     let spawnCrasher = (() => {
         const config = {
-            max: 1,
+            max: 10,
             chance: .9,
             sentryChance: 0.95,
             crashers: [Class.crasher, Class.fragment, Class.dartCrasher],
@@ -792,17 +785,30 @@ const maintainloop = (() => {
             new FoodType("Normal Food", [
                 Class.egg, Class.square, Class.triangle,
                 Class.pentagon, Class.bigPentagon
-            ], ["scale", 4], 4000),
+            ], ["scale", 4], 50000),
             new FoodType("Rare Food", [
                 Class.gem, Class.greensquare, Class.greentriangle,
                 Class.greenpentagon
-            ], ["scale", 5], 1),
+            ], ["scale", 4], 1),
+                      new FoodType("Super Rare Food", [
+                Class.jewel, Class.legendarysquare, Class.legendarytriangle,
+                Class.legendarypentagon
+            ], ["scale", 4], 0.05),
             new FoodType("Nest Food", [
                Class.pentagon, Class.scaleneTriangle, Class.rhombus, Class.bigPentagon, Class.hugePentagon,
               /*  Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon,
                 Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
-            ], ["scale", 4], 1, true)
-
+            ], ["scale", 4], 50000, true),
+           new FoodType("Rare Nest Food", [
+               Class.greenpentagon, Class.greenscaleneTriangle, Class.greenrhombus, Class.greenbigPentagon, Class.greenhugePentagon,
+              /*  Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon,
+                Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
+            ], ["scale", 4], 1, true),
+   new FoodType("Super Rare Nest Food", [
+               Class.legendarypentagon, Class.legendaryscaleneTriangle, Class.legendaryrhombus, Class.legendarybigPentagon, Class.legendaryhugePentagon,
+              /*  Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon,
+                Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
+            ], ["scale", 4], 0.05, true)
         ];
         function getFoodType(isNestFood = false) {
             const possible = [[], []];
