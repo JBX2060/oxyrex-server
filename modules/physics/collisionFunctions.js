@@ -183,12 +183,16 @@ function advancedcollide(my, n, doDamage, doInelastic, nIsFirmCollide = false) {
                 /********** DO DAMAGE *********/
                 let bail = false;
                 let necroTypes = ["food"];
+            
                 if ((my.settings.isNecromancer || n.settings.isNecromancer) && Math.abs(my.shape) === Math.abs(n.shape)) {
                     if ((my.settings.necroBullets || n.settings.necroBullets) && Math.random() > 0.9) necroTypes.push("bullet");
                     if ((my.settings.necroDrones || n.settings.necroDrones) && Math.random() > 0.9) necroTypes.push("drone", "minion", "swarm");
+                
                     if (my.settings.isNecromancer && necroTypes.includes(n.type)) bail = my.necro(n, necroTypes.length > 1);
                     if (n.settings.isNecromancer && necroTypes.includes(my.type)) bail = n.necro(my, necroTypes.length > 1);
-                }
+                  }
+                
+              
                 if (!bail) {
                     /*if (my.poison.status == true && n.poison.timeLeft == 0) {
                         n.poison.amplification = my.poison.amplification

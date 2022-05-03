@@ -1469,6 +1469,7 @@ class Entity {
        if (set.SECONDARY_SPAWN_ON_DEATH) this.secondarySpawnOnDeath = set.SECONDARY_SPAWN_ON_DEATH;
         if (set.FRAG_SPAWNS) this.fragEntities = set.FRAG_SPAWNS;
         if (set.DEATH_FUNCTION) this.deathFunction = set.DEATH_FUNCTION;
+      if (set.UNINFECTABLE) this.uninfectable = set.UNINFECTABLE
         if (set.TURRETS != null) {
             let o;
             this.turrets.forEach(o => o.destroy());
