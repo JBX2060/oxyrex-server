@@ -25,7 +25,7 @@ function id(i, level = true, norm = false) {
     if (i && !norm) {
         return !!level ? `bas${i}` : `bap${i}`;
     } else {
-        const list = ["rock", "rock", "roid"];
+        const list = ["rock", "rock", "roid", "dom69"];
         return list[Math.floor(Math.random() * list.length)];
     }
 }
@@ -350,7 +350,7 @@ const gamemodes = {
             ROOM_SETUP: (function() {
                 const output = setup({
                     width: width,
-                    height: height
+                    height: height 
                 });
                 const mapType = Math.round(Math.random()); // + width % 2; // For alt map type
                 const bases = getBaseShuffling(teams);
@@ -531,49 +531,49 @@ const gamemodes = {
     "Trench Battle": {
         MODE: "tdm",
         TEAMS: 2,
-        WIDTH: 5500,
-        HEIGHT: 5500,
-        X_GRID: 16,
-        Y_GRID: 16,
+        WIDTH: 10000,
+        HEIGHT: 10000,
+        X_GRID: 32,
+        Y_GRID: 32,
         MAZE: {
             mapString: `
             --------------------------------
-            -@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-
-            -@############################@-
-            -@############################@-
-            -@##------------------------##@-
-            -@##------------------------##@-
-            -@##@@@@@@@@@@@@@@@@@@@@@@@@##@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@#@-@@@@@@@@@@@@@@@@@@@@@@-@#@-
-            -@#@-@@@@@@@@@@@@@@@@@@@@@@-@#@-
-            -@#@-@@@@@@@@@@@@@@@@@@@@@@-@#@-
-            -@#@-@@@@@@@@@@@@@@@@@@@@@@-@#@-
-            -@#@-@@@@@@@@@@@@@@@@@@@@@@-@#@-
-            -@#@@@@@##@@@@@@@@@@@@##@@@@@#@-
-            -@#@@@--@@#@@@@@@@@@@#@@--@@@#@-
-            -@#@@@-@@@#@@@@@@@@@@#@@@-@@@#@-
-            -@#----@##@@@@@@@@@@@@##@----#@-
-            -@#-@@@@@@@@@@@@@@@@@@@@@@@@-#@-
-            -@#-@@@@@@@@--------@@@@@@@@-#@-
-            -@#-@@@@@@@@-@@@@@@-@@@@@@@@-#@-
-            -@#-@@@@-----@@@@@@-----@@@@-#@-
-            -@#@@@@@@@@@@@@@@@@@@@@@@@@@@#@-
-            -@############################@-
-            -@############################@-
-            -@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-
             --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------------
+            --------------------------#-##--
+            ----#---------------------------
+            --------------####-##----####-##
+            ------####---#--#---#####------#
+            ----------#---#---#-------####-#
+            ------##--#-#---####-#-##--#-#-#
+            -----#-##-#--#-##--#--##-----#-#
+            -------#----##--#--##-----#--#-#
+            -----#---##-#--------#-#--##-#-#
+            ------#-----#-#-##-#-#--#-#--#-#
+            -----#####-####-#--#--#-#-##-#-#
+            -----#----#---#-#-#---##---#-#-#
+            --#-#-#-#-#---#---#-#-----#--#-#
+            ----#-----#---#-#-##--###-#----#
+            ----#--#-##-#-#----####---#-##-#
+            --#-#-#--#-#---#-#--#-#-#####-##
+            --#---#-----#---------#--#-----#
+            ----#--#-#-----#-#----#----#-#-#
+            ----############################
             `,
             erosionPattern: {
-                amount: .4,
+                amount: .575,
                 getter: (i, max) => {
-                    if (i > max * .4) {
+                    if (i > max * .65) {
                         return [Math.random() > .4 ? 2 : Math.random() > .5 ? 1 : 0, Math.random() > .1 ? 2 : (Math.random() * 2 | 0)];
                     } else {
                         return [+(Math.random() > .5), (Math.random() * 3 | 0)];
@@ -582,31 +582,48 @@ const gamemodes = {
             }
         },
         ROOM_SETUP: [
-            ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "port", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "port", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "nest", "nest", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "nest", "nest", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "bas2", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "norm", "bas2", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas2", "norm", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb"],
-            ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb"]
+            ["bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1"], ["bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1"],
+            ["bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1"], ["bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1", "bas1"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"], ["norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm"],
+            
         ],
         secondaryGameMode: "tb",
         DO_BASE_DAMAGE: false,
         TRENCH_WARFARE: true
     },
+  
     "Escort": {
         MODE: "tdm",
         TEAMS: 1,
-        BETA: 1,
         WIDTH: 24000,
         HEIGHT: 3750,
         ROOM_SETUP: (function() {
@@ -630,8 +647,8 @@ const gamemodes = {
             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@#@@@@@@@@@@@@@@@@@@#############------------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@----------------------------------------------------------@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-@@@@@@@#@@@@@@@@@@@@@@@@@@###############@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-----------------------------------------#@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-#@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-#@@@@@@@@@@@@@@@-@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
             @@@@---------------------------@@@@@@@@@@@@@@@@@#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-#@@@@@@@@@@@@@@@------------------@@@@@@@@@@@@@
@@ -679,6 +696,7 @@ const gamemodes = {
         })(),
         secondaryGameMode: "if"
     },
+
     "Sandbox": {
         WIDTH: 3500,
         HEIGHT: 3500,
@@ -703,7 +721,7 @@ const gamemodes = {
         ALLOW_MAZE: {}
     },
     "Closed Beta": {
-        BETA: 1,
+       // BETA: 1,
         maxPlayers: 40,
         ROOM_SETUP: (function() {
             const output = setup({
@@ -711,93 +729,13 @@ const gamemodes = {
                 height: 32,
                 rockScatter: .15
             });
-          /*  for (let i = 0; i < 8; i ++) {
+            for (let i = 0; i < 8; i ++) {
                 output[6 + i][6] = output[6][6 + i] = output[13 - i][13] = output[13][13 - i] = "wall";
             }
             output[9][13] = "door";
-            return output; */
-        })(),
-        secondaryGameMode: global.fingerPrint.localhost ? "ffa" : "cb"
-    },
-    "Tower Defense": {
-        BETA: 1,
-        MODE: 'tdm',
-        TEAMS: 1,
-        SPECIAL_BOSS_SPAWNS: true,
-        maxPlayers: 40,
-        ROOM_SETUP: (function() {
-            const output = setup({
-                width: 16,
-                height: 16,
-                rockScatter: 0
-            });
             return output;
         })(),
-       MAZE: {
-            mapString: `
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            ---##########################---
-            ---#------------------------#---
-            ---#------------------------#---
-            ---#------------------------#---
-            ---#------------------------#---
-            ---#------------------------#---
-            ---#------------------------#---
-            ---###################------#---
-            ---@@@00@@00@@00@@00@#-----@#---
-            --@###################-----@#---
-            --@#@----------------------@#---
-            --@#@----------------------@#---
-            --@#@----------------------@#---
-            --@#@----------------------@#---
-            --@#@----------------------@#---
-            --@#@-----@0@@00@@00@@00@@00#---
-            --@#@----@###################---
-            --@#@----@#0@@00@@00@@@00@@00@--
-            --@#@----@###################@--
-            --@#@-----00@@00@@00@@00@@00#@--
-            --@#@-----00@@00@@00@@-----0#@--
-            --@#@-----00@@00@@00@@-----0#@--
-            --@#@-----00@@00@@00@@-----0#@--
-            --@#@-----00@@00@@00@@-----0#@--
-            --@#@@00@@00@@00@@00@@00@@00#@--
-            --@##########################@--
-            --@00@@00@@00@@00@@00@@00@@00@--
-            --------------------------------
-            --------------------------------
-            `,
-            erosionPattern: {
-                amount: 0.1,
-                getter: (i, max) => {
-                    if (i > max * .4) {
-                        return [Math.random() > .4 ? 2 : Math.random() > .5 ? 1 : 0, Math.random() > .1 ? 2 : (Math.random() * 2 | 0)];
-                    } else {
-                        return [+(Math.random() > .5), (Math.random() * 3 | 0)];
-                    }
-                }
-            }
-        },
-       ROOM_SETUP: [
-            ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "boss", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "boss", "norm", "norm", "norm", "norm", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "boss", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas1", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "nest", "nest", "nest", "nest", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "nest", "nest", "nest", "nest", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "bas1", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "bas1", "norm", "outb", "outb"],
-            ["outb", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "norm", "outb", "outb"],
-            ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb"],
-            ["outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb", "outb"]
-        ],
-        secondaryGameMode: global.fingerPrint.localhost ? "td" : "cb"
+        secondaryGameMode: global.fingerPrint.localhost ? "ffa" : "cb"
     }
 };
 
@@ -822,19 +760,20 @@ const choiceTable = {
     "Trench Battle": 8,
     "Escort": 6,
     // XYZ and C
-    "Closed Beta": 1 ,
-    "Tower Defense": 1 
+    "Closed Beta": 1 
 };
 
 const serverTable = {
     "oa": ["FFA", "TDM", "Trios"],
     "ob": ["Domination", "Mothership", "Kill Race", "Soccer"],
     "ha": ["FFA", "TDM", "Duos"],
-    "hb": ["Domination", "Center Control", "Survival", "Tag"],
+    "hb": ["Domination", "Center Contro", "Survival", "Tag"],
     "ba": ["Boss Rush", "Trench Battle", "Tag", "Center Control", "Domination", "Mothership", "Soccer"],
     "ga": ["FFA", "TDM", "Duos", "Trios", "Survival", "Tag", "Kill Race"],
+    "repl": ["Trench Battle"],
     "c": ["Closed Beta"],
-    "xyz": ["Closed Beta"]
+    // "xyz": ["Closed Beta"]
+    "xyz": ["Trench Battle"]
 }
 
 const gamemode = (function() {
