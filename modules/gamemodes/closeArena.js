@@ -19,7 +19,6 @@ let arenaClosers = [
     "growerCloser",
     "pelleterCloser",
     "propellerCloser",
-    "smasherCloser",
     "closerCeption",
     "closerCeptionist2",
     "destroyerCloser",
@@ -32,18 +31,16 @@ let arenaClosers = [
     "hybridarenaCloser",
     "screwGunCloser",
     "naturalistCloser",
-    "swivelCloser",
     "artilleryCloser",
     "overseerCloser",
     "colonyCloser",
-    "lancerCloser",
     "subduerCloser"
 ].map(entry => Class[entry + "AI"]);
 
 function closeArena() {
     if (arenaClosed) return;
     sockets.broadcast("Arena Closed: No players may join!");
-    global.updateStatusMessage("Arena Closed: No players may join!");
+    //global.updateStatusMessage("Arena Closed: No players may join!");
     global.arenaClosed = true;
     if (c.SANDBOX) {
         global.sandboxRooms.forEach(({ id }) => {
@@ -56,7 +53,6 @@ function closeArena() {
             
                 o.define(ran.choose(arenaClosers));
                   o.name = "Arena Closer";
-
                 o.color = 3;
                 o.team = -100;
                 o.skill.score = 23650;
@@ -91,7 +87,7 @@ function closeArena() {
         setTimeout(process.exit, 1500);
     };
     setTimeout(close, 60000);
-    let ticks = 0;
+   /* let ticks = 0;
     const loop = setInterval(function checkSurvivors() {
         ticks++;
         if (ticks >= 240) return close();
@@ -103,8 +99,8 @@ function closeArena() {
             if (instance.isPlayer || instance.isBot || (instance.isDominator && instance.team !== -100) || instance.isMothership) alive++;
         });
         if (!alive) close();
-    }, 500);
-};
+    }, 500);*/
+}; 
 module.exports = {
     closeArena
 };

@@ -12,9 +12,9 @@ goog.require('goog.structs.QuadTree');
 
 const bossRush = (function() {
     const escorts = [Class.nestDefenderKrios, Class.nestDefenderTethys, Class.nestDefenderMnemosyne, Class.nestDefenderIapetus, Class.nestDefenderThemis, Class.nestDefenderNyx, Class.nestDefenderOuranos];
-    let bossTypes = [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss, Class.eliteDirector, Class.eliteSkimmer, Class.palisade, Class.summoner, Class.guardian, Class.greenGuardian, Class.atrium, Class.quadriatic, Class.sterilizerBoss, Class.eggPrinceTier1, Class.eggPrinceTier2, Class.eggBossTier1, Class.eggBossTier2, Class.squareBossTier1, Class.squareBossTier2, Class.triangleBossTier1, Class.triangleBossTier2, Class.desertTemple, Class.steamrollerGod, Class.octoberRevolution, Class.careenervirus, Class.kinderbumper];
+    let bossTypes = [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss, Class.eliteDirector, Class.eliteSkimmer, Class.palisade, Class.summoner, Class.guardian, Class.defender, Class.greenGuardian, Class.atrium, Class.quadriatic, Class.sterilizerBoss, Class.eggPrinceTier1, Class.eggPrinceTier2, Class.eggBossTier1, Class.eggBossTier2, Class.squareBossTier1, Class.squareBossTier2, Class.triangleBossTier1, Class.triangleBossTier2, Class.desertTemple, Class.steamrollerGod, Class.octoberRevolution, Class.careenervirus, Class.kinderbumper];
     let celestials = [Class.apolloCelestial, Class.odinCelestial, Class.artemisCelestial, Class.lokiCelestial, Class.aresCelestial, Class.rheaCelestial, Class.demeterCelestial, Class.athenaCelestial, Class.hadesCelestial, Class.pontusCelestial];
-    const finalBosses = [Class.oceanusCelestial, Class.thorCelestial, Class.raCelestial, Class.nyxCelestial, Class.legendaryCrasher, Class.sacredCrasher, Class.mythicalCrasher, Class.legendaryQuadralMachine, Class.catalyst, Class.gaea];
+    const finalBosses = [Class.oceanusCelestial, Class.thorCelestial, Class.raCelestial, Class.nyxCelestial, Class.legendaryCrasher, Class.sacredCrasher, Class.mythicalCrasher, Class.legendaryQuadralMachine, Class.catalyst, Class.gaea, Class.eggBossTier4];
     const waves = (function() {
         class Wave {
             constructor(bosses, message) {

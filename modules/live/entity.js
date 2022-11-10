@@ -1006,7 +1006,7 @@ class Entity {
                 this.poison.timeLeft = instance.poison.duration;
             }
         }
-        if (instance.ice.status && (this.type === "tank" || this.type === "crasher" || this.type === "miniboss" || this.type === "food")) {
+        if (instance.ice.status && (this.type === "tank" || this.type === "crasher" || this.type === "miniboss" || this.type === "food" || this.type === "bullet" || this.type === "drone")) {
             this.ice.strength = instance.ice.amplification;
             if (instance.ice.duration > this.ice.timeLeft) {
                 this.ice.timeLeft = instance.ice.duration;
@@ -1033,7 +1033,7 @@ class Entity {
         }
         if (this.poison.timeLeft > 0) {
             if ((this.health.amount - (.3 * this.poison.strength)) > (this.health.max / 10)) {
-                this.health.amount -= (.3 * this.poison.strength);
+                this.health.amount -= (.3 * this.poison.strength * 100) / (this.health.max + this.damage);
                 this.health.lastDamage = Date.now();
             }
             if ((this.shield.amount - (.3 * this.poison.strength)) > (this.shield.max / 10)) {
@@ -2093,7 +2093,7 @@ class Entity {
                                 shard.control.target.x = positions[i][2];
                                 shard.control.target.y = positions[i][3];
                                 shard.define(Class.summonerSquare);
-                                //shard.ACCELERATION = 0.015 / (1 + 1)
+                                
                             }
                         }, 300);
                   } break;
@@ -2115,7 +2115,7 @@ class Entity {
                                 shard.team = this.team;
                                 shard.control.target.x = positions[i][2];
                                 shard.control.target.y = positions[i][3];
-                                shard.define(Class.trapCrasher);
+                                shard.define(Class.triangleCrasher);
                             }
                         }, 300);
                   } break;
@@ -2136,8 +2136,8 @@ class Entity {
                                     y: positions[i][1]
                                 });
                                 shard.team = this.team;
-                                //shard.control.target.x = positions[i][2];
-                                //shard.control.target.y = positions[i][3];
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
                                 shard.define(Class.crasher);
                             }
                         }, 300);
@@ -2161,8 +2161,31 @@ class Entity {
                                 shard.control.target.x = positions[i][2];
                                 shard.control.target.y = positions[i][3];
                                 shard.define(Class.splitterSquare);
+                                shard.ACCELERATION = 0.015 / (1 + 1)
                             }
                         }, 300);
+                  } break;
+                     case "duplicatingSquare": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                   [x + 40, y, -40, 0],
+                                   
+                                    [x, y - 40, 0, 40]
+                                   
+                                ];
+                            for (let i = 0; i < 2; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.duplicatingSquare);
+                            }
+                        }, 3000);
                   } break;
                   default: util.error("Unknown death function");
                 }

@@ -8,7 +8,7 @@ goog.require('goog.structs.PriorityQueue');
 goog.require('goog.structs.QuadTree');
 const dominatorLoop = (function() {
     let config = {
-        types: [Class.destroyerDominator, Class.gunnerDominator, Class.trapperDominator, Class.droneDominator, Class.steamrollerDominator, Class.crockettDominator, Class.spawnerDominator, Class.autoDominator],
+        types: [Class.skirmisherDominator, Class.destroyerDominator, Class.gunnerDominator, Class.trapperDominator, Class.droneDominator, Class.steamrollerDominator, Class.crockettDominator, Class.spawnerDominator, Class.autoDominator],
         neededToWin: 4
     };
     let gameWon = false;

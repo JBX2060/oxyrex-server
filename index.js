@@ -9,6 +9,7 @@ goog.require('goog.structs.QuadTree');
 const GLOBAL = require("./modules/global.js");
 const { ioTypes } = require('./modules/live/controllers.js');
 console.log(`[${GLOBAL.creationDate}]: Server initialized.\nRoom Info:\nDimensions: ${room.width} x ${room.height}\nMax Food / Nest Food: ${room.maxFood} / ${room.maxFood * room.nestFoodAmount}`);
+console.log("WINFAN PORN")
 // Let's get a cheaper array removal thing
 Array.prototype.remove = function(index) {
     if (index === this.length - 1) return this.pop();
@@ -423,7 +424,7 @@ const maintainloop = (() => {
                 switch (ran.chooseChance(1, 1, 1)) {
                     case 0:
                         choice = [
-                            [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss], 1 + (Math.random() * 2 | 0), 'a', 'nest'
+                            [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss], 1 + (Math.random() * 2 | 0), 'a', 'nest'
                         ];
                         sockets.broadcast("A stirring in the distance...");
                         break;
@@ -511,7 +512,7 @@ const maintainloop = (() => {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
                 let choice = [
-                    [[Class.eggSanctuary, Class.squareSanctuary, Class.triangleSanctuary][ran.chooseChance(5000, 2, 0.5)]],
+                    [[Class.eggSanctuary, Class.squareSanctuary, Class.triangleSanctuary][ran.chooseChance(5, 2, 0.5)]],
                     1 + Math.floor(Math.random()) | 0, "a"
                 ];
                 boss.prepareToSpawn(...choice);
@@ -802,7 +803,7 @@ const maintainloop = (() => {
                 Class.greenpentagon
             ], ["scale", 4], 1),
             new FoodType("Splitting Food", [
-                Class.splitterSquare, Class.splitterTriangle, /*Class.splitterPentagon*/  
+                Class.splitterSquare, Class.splitterTriangle, Class.splitterPentagon,  
                 Class.splitterSplitterSquare
             ], ["scale", 2], 1000),
             new FoodType("Super Rare Food", [
@@ -810,7 +811,7 @@ const maintainloop = (() => {
                 Class.legendarypentagon
             ], ["scale", 4], 0.05),
             new FoodType("Nest Food", [
-               Class.pentagon, Class.scaleneTriangle, Class.rhombus, Class.bigPentagon, Class.hugePentagon,
+               Class.pentagon, Class.scaleneTriangle, Class.rhombus, Class.splitterPentagon, Class.bigPentagon, Class.hugePentagon,
               /*  Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon,
                 Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
             ], ["scale", 4], 50000, true),

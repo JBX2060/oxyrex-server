@@ -73,7 +73,7 @@ const gamemodes = {
         const xGrid = [16, 20, 20][portals];
         const yGrid = [16, 9, 20][portals];
         return {
-            //RANDOM_COLORS: Math.random() > .75,
+            RANDOM_COLORS: Math.random() > .75,
             WIDTH: [6500, 8000, 8000][portals],
             HEIGHT: [6500, 3600, 8000][portals],
             ALLOW_MAZE: {
@@ -255,27 +255,6 @@ const gamemodes = {
         HIDE_AND_SEEK: true,
         secondaryGameMode: "hs"
     },
-    "MAZE": {
-      MODE: "ffa",
-      WIDTH: 7500,
-      HEIGHT: 7500,
-      ALLOW_MAZE: {
-        mapString: `
-        ------------
-        -#-###---#--
-        -###----###-
-        --####---##-
-        -####-##-#--
-        ------####--
-        ---#######--
-        -#--###--#--
-        ---####---#-
-        ---#--#--#--
-        -######-#---
-        ------------
-        `
-      },
-    },
     "Soccer": {
         MODE: "tdm",
         TEAMS: 2,
@@ -309,7 +288,7 @@ const gamemodes = {
         TEAMS: (Math.random() * 7 | 0) + 2,
         ROOM_SETUP: setup(),
         MOTHERSHIP_LOOP: true,
-        ALLOW_MAZE: {
+        /*ALLOW_MAZE: {
             mapString: `
                 --------------------------------
                 -@@@@@@@@@@@@@##-#@@@@@@@@@@@@@-
@@ -344,7 +323,7 @@ const gamemodes = {
                 -@@@@@@@@@@@@@#-##@@@@@@@@@@@@@-
                 --------------------------------
             `      
-        },
+        },*/
         secondaryGameMode: "m"
     },
     "Tag": {
@@ -352,7 +331,6 @@ const gamemodes = {
         TEAMS: (Math.random() * 7 | 0) + 2,
         ROOM_SETUP: setup(),
         TAG: true,
-        FORCE_BOTS: 25,
         ALLOW_MAZE: {},
         secondaryGameMode: "t"
     },
@@ -362,7 +340,6 @@ const gamemodes = {
             height = 13;
         return {
             MODE: "tdm",
-            FORCE_BOTS: 25,
             TEAMS: teams,
             X_GRID: width,
             Y_GRID: height,
@@ -521,7 +498,6 @@ const gamemodes = {
         ],
         secondaryGameMode: "br",
         DO_BASE_DAMAGE: false,
-        FORCE_BOTS: 25,
         FOOD_AMOUNT: .3
     },
     "Center Control": {
@@ -529,7 +505,6 @@ const gamemodes = {
         TEAMS: 2,
         WIDTH: 5000,
         HEIGHT: 5000,
-        FORCE_BOTS: 25,
         X_GRID: 7,
         Y_GRID: 7,
         ROOM_SETUP: [
@@ -558,7 +533,6 @@ const gamemodes = {
         TEAMS: 2,
         WIDTH: 7000,
         HEIGHT: 7000,
-        FORCE_BOTS: 25,
         X_GRID: 32,
         Y_GRID: 32,
         MAZE: {
@@ -743,13 +717,6 @@ const gamemodes = {
         secondaryGameMode: "gp",
         ALLOW_MAZE: {}
     },
-   "Growth": {
-     
-        secondaryGameMode: "gr",
-        SKILL_CAP: 512,
-        SKILL_CHEAT_CAP: 60,
-        ALLOW_MAZE: {}
-    },
     "Trios": {
         GROUPS: 3,
         secondaryGameMode: "gp",
@@ -780,7 +747,6 @@ const choiceTable = {
     "TDM": 7,
     "Trios": 4,
     "Duos": 4,
-    "MAZE": 6,
     // Event Mode Servers
     "Domination": 7,
     "Mothership": 6,
@@ -795,7 +761,6 @@ const choiceTable = {
     "Sandbox": 1,
     "Trench Battle": 8,
     "Escort": 6,
-    "Growth": 3,
     // XYZ and C
     "Closed Beta": 1 
 };
@@ -807,7 +772,7 @@ const serverTable = {
     "hb": ["Domination", "Center Contro", "Survival", "Tag"],
     "ba": ["Boss Rush", "Trench Battle", "Tag", "Center Control", "Domination", "Mothership", "Soccer"],
     "ga": ["FFA", "TDM", "Duos", "Trios", "Survival", "Tag", "Kill Race"],
-    "repl": ["Mothership", "Tag", "TDM", "FFA", "Duos", "Trios", "Kill Race", "Domination", "Trench Battle", "Boss Rush", "Soccer", "Center Control"],
+    "repl": ["Trench Battle"],
     "c": ["Closed Beta"],
     // "xyz": ["Closed Beta"]
     "xyz": ["Trench Battle"]

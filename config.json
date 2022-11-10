@@ -6,7 +6,7 @@
         "ip": true,
         "fingerprint": true
     },
-    "clientAddresses": ["oxyrex.io", "6ibui.glitch.me", "www.oxyrex.io", "oxyrex.netlify.app", "woomy.arras.cx", "oxyrex.surge.sh", "oxyrex-client.liyongxin.repl.co", "oxys.erws.ga", "somethingidk.liyongxin.repl.co", "localhost:8080", "localhost:3000"],
+     "clientAddresses": ["oxyrex.io", "6ibui.glitch.me", "www.oxyrex.io", "oxyrex.netlify.app", "woomy.arras.cx", "oxyrex.surge.sh", "oxyrex-client.liyongxin.repl.co", "oxys.erws.ga", "somethingidk.liyongxin.repl.co", "localhost:8080", "localhost:3000", "jiankun-huang.github.io"],
     "networkUpdateFactor": 24,
     "socketWarningLimit": 5,
     "tabLimit": 2,
