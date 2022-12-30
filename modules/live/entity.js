@@ -430,8 +430,20 @@ class Gun {
                     this.body.master.sendMessage("Hold Right-Click to detonate your missile!");
                 } break;
                 case "hitScan":
-                case "hitScan1":
-                case "hitScan2":
+                    break;
+                case "hitScan1": {}
+                    break;
+                 case "superlaserCloseArena":
+                {
+                     global.closeArena();
+                }
+                case "hitScan2": 
+                break;
+                 case "superlaserExit":
+                {
+                     process.exit();
+                }
+                    break;
                 case "hitScan3": {
                     if (this.body.master.health.amount < 0) break;
                     let save = {
@@ -694,6 +706,15 @@ class Entity {
             timeLeft: 0,
             strength: 1
         };
+         this.regen = { // Regen effect
+            // My settings
+            status: false,
+            duration: 0,
+            amplification: 1,
+            // What other people give me
+            timeLeft: 0,
+            strength: 1
+        };
         this.ice = { // Ice effect
             // My settings
             status: false,
@@ -718,6 +739,18 @@ class Entity {
             timeLeft: 0
         };
         this.tesla = { // Tesla effect
+            // My settings
+            status: false,
+            amplification: 1,
+	          radius: 1
+        };
+         this.iceaura = { // Ice Aura effect
+            // My settings
+            status: false,
+            amplification: 1,
+	          radius: 1
+        };
+          this.poisonaura = { // Poison Aura effect
             // My settings
             status: false,
             amplification: 1,
@@ -793,6 +826,16 @@ class Entity {
         this.invuln = false;
         this.invulnTime = [-1, -1];
         this.alpha = 1;
+        this.healer_dont_target = false;
+        this.healer_bullet = false;
+        this.shiny = false;
+        this.legendary = false;
+        this.mythical = false;
+        this.ice_immune = false;
+        this.poison_immune = false;
+        this.regen_immune = false;
+        this.poison_tolerance = 1;
+        this.ice_tolerance = 1;
         this.invisible = [0, 0];
         this.dangerValue = 5;
         this.turretTraverseSpeed = 1;
@@ -1000,28 +1043,44 @@ class Entity {
         this.activation.update();
     }
     transferEffects(instance) {
+        if (instance.poison_immune == false) {
         if (instance.poison.status && (this.type === "tank" || this.type === "crasher" || this.type === "miniboss" || this.type === "food")) {
             this.poison.strength = instance.poison.amplification;
             if (instance.poison.duration > this.poison.timeLeft) {
                 this.poison.timeLeft = instance.poison.duration;
             }
         }
+        }
+         if (instance.regen_immune == false) {
+        if (instance.regen.status && (this.type === "tank" || this.type === "crasher" || this.type === "miniboss" || this.type === "food")) {
+            this.regen.strength = instance.regen.amplification;
+            if (instance.regen.duration > this.regen.timeLeft) {
+                this.regen.timeLeft = instance.regen.duration;
+            }
+        }
+        }
+        if (instance.ice_immune == false) {
         if (instance.ice.status && (this.type === "tank" || this.type === "crasher" || this.type === "miniboss" || this.type === "food" || this.type === "bullet" || this.type === "drone")) {
             this.ice.strength = instance.ice.amplification;
             if (instance.ice.duration > this.ice.timeLeft) {
                 this.ice.timeLeft = instance.ice.duration;
             }
         }
+        }
+        if (instance.emp_immune == false) {
         if (instance.emp.status) {
             if (instance.emp.duration > this.emp.timeLeft) {
                 this.emp.timeLeft = instance.emp.duration;
             }
         }
+        }
+        if (instance.confusion_immune == false) {
         if (instance.confusion.status) {
             if (instance.confusion.duration > this.confusion.timeLeft) {
                 this.confusion.timeLeft = instance.confusion.duration;
             }
         }
+    }
     }
     effectTick() {
         if (this.passive || this.invuln || this.godmode) {
@@ -1029,11 +1088,13 @@ class Entity {
             this.ice.timeLeft = 0;
             this.emp.timeLeft = 0;
             this.confusion.timeLeft = 0;
+            this.regen.timeLeft = 0;
             return;
         }
+        if (this.poison_immune == false) {
         if (this.poison.timeLeft > 0) {
             if ((this.health.amount - (.3 * this.poison.strength)) > (this.health.max / 10)) {
-                this.health.amount -= (.3 * this.poison.strength * 100) / (this.health.max + this.damage);
+                this.health.amount -= ((.3 * this.poison.strength * 100)) / (this.health.max + this.damage);
                 this.health.lastDamage = Date.now();
             }
             if ((this.shield.amount - (.3 * this.poison.strength)) > (this.shield.max / 10)) {
@@ -1042,17 +1103,43 @@ class Entity {
             }
             this.poison.timeLeft --;
         }
+              if (this.regen_immune == false) {
+        if (this.regen.timeLeft > 0) {
+            if (this.health.amount + (.3 * this.regen.strength)) {
+                this.health.amount += ((.3 * this.regen.strength * 100)) / (this.health.max + this.damage);
+                this.health.lastDamage = Date.now();
+            }
+            if (this.shield.amount + (.3 * this.regen.strength)) {
+                this.shield.amount += (.3 * this.regen.strength);
+                this.shield.lastDamage = Date.now();
+            }
+            this.regen.timeLeft --;
+        }
+        }
+        if (this.ice_immune == false) {
         if (this.ice.timeLeft > 0) {
-            this.velocity.x -= (this.velocity.x * (this.ice.strength / 4.25));
-            this.velocity.y -= (this.velocity.y * (this.ice.strength / 4.25));
+            if (this.type == 'tank') {
+            this.accel.x -= ((this.accel.x * ((this.ice.strength) / 3.25)));
+            this.accel.y -= ((this.accel.y * ((this.ice.strength) / 3.25)));
+            } else {
+                
+            this.velocity.x -= ((this.velocity.x * ((this.ice.strength) / 5.25)));
+            this.velocity.y -= ((this.velocity.y * ((this.ice.strength) / 5.25))); 
+                }
             this.ice.timeLeft --;
         }
+        }
+        if (this.emp_immune == false) {
         if (this.emp.timeLeft > 0) {
             this.emp.timeLeft --;
         }
+        }
+        if (this.confusion_immune == false) {
         if (this.confusion.timeLeft > 0) {
             this.confusion.timeLeft --;
         }
+        }
+        if (this.tesla_immune == false) {
         if (this.tesla.status) {
             for (let instance of entities) {
                 if (util.getDistance(instance, this) < (this.size * 8) * this.tesla.radius && instance.master.team !== this.master.team && instance.master.master !== this.master.master && !instance.passive && !instance.invuln && !instance.godmode) {
@@ -1071,6 +1158,40 @@ class Entity {
                 }
             }
         }
+        }
+             if (this.ice_immune == false) {
+              if (this.iceaura.status) {
+            for (let instance of entities) {
+                if (util.getDistance(instance, this) < (this.size * 8) * this.iceaura.radius && instance.master.team !== this.master.team && instance.master.master !== this.master.master && !instance.passive && !instance.invuln && !instance.godmode) {
+                    if (instance.type === "tank" || instance.type === "crasher" || instance.type === "miniboss" || instance.type === "food") {
+                       
+             instance.velocity.x -= ((instance.accel.x * ((this.iceaura.amplification) / 7.25)));
+            instance.velocity.y -= ((instance.accel.y * ((this.iceaura.amplification) / 7.25)));
+                        }
+                    }
+                }
+            }
+        }
+     if (this.poison_immune == false) {
+              if (this.poisonaura.status) {
+            for (let instance of entities) {
+                if (util.getDistance(instance, this) < (this.size * 8) * this.poisonaura.radius && instance.master.team !== this.master.team && instance.master.master !== this.master.master && !instance.passive && !instance.invuln && !instance.godmode) {
+                    if (instance.type === "tank" || instance.type === "crasher" || instance.type === "miniboss" || instance.type === "food") {
+                     if ((instance.health.amount - (.3 *  this.poisonaura.amplification)) > (instance.health.max / 4)) {
+                             instance.health.amount -= ((.3 * this.poisonaura.amplification * 100)) / (instance.health.max + (instance.damage * 2));
+                            instance.health.lastDamage = Date.now();
+                        }
+                        if ((instance.shield.amount - (.3 *  this.poisonaura.amplification)) > (instance.shield.max / 4)) {
+                            instance.shield.amount -= (.3 *  this.poisonaura.amplification);
+                            instance.shield.lastDamage = Date.now();
+                        }
+          
+                        }
+                    }
+                }
+            }
+        }
+    }
     }
     life() {
         bringToLife(this);
@@ -1174,6 +1295,10 @@ class Entity {
         if (set.MOTION_EFFECTS != null) {
             this.settings.motionEffects = set.MOTION_EFFECTS;
         }
+           if (set.POISON_TOLERANCE != null)
+            this.poison_tolerane = set.POISON_TOLERANCE;
+            if (set.POISON_IMMUNE != null)
+            this.poison_immune = set.POISON_IMMUNE;
         if (set.POISON != null) {
             if (set.POISON.STATUS != null) {
                 this.poison.status = set.POISON.STATUS;
@@ -1185,6 +1310,23 @@ class Entity {
                 this.poison.amplification = set.POISON.AMPLIFY;
             }
         }
+         if (set.POISON_IMMUNE != null)
+            this.poison_immune = set.POISON_IMMUNE;
+          if (set.REGEN != null) {
+            if (set.REGEN.STATUS != null) {
+                this.regen.status = set.REGEN.STATUS;
+            }
+            if (set.REGEN.TIME != null) {
+                this.regen.duration = set.REGEN.TIME;
+            }
+            if (set.REGEN.AMPLIFY != null) {
+                this.regen.amplification = set.REGEN.AMPLIFY;
+            }
+        }
+        if (set.ICE_TOLERANCE != null)
+            this.ice_tolerane = set.ICE_TOLERANCE;
+        if (set.ICE_IMMUNE != null)
+            this.ice_immune = set.ICE_IMMUNE;
         if (set.ICE != null) {
             if (set.ICE.STATUS != null) {
                 this.ice.status = set.ICE.STATUS;
@@ -1196,6 +1338,8 @@ class Entity {
                 this.ice.amplification = set.ICE.AMPLIFY;
             }
         }
+            if (set.EMP_IMMUNE != null)
+            this.emp_immune = set.EMP_IMMUNE;
         if (set.EMP != null) {
             if (set.EMP.STATUS != null) {
                 this.emp.status = set.EMP.STATUS;
@@ -1204,6 +1348,8 @@ class Entity {
                 this.emp.duration = set.EMP.TIME;
             }
         }
+            if (set.CONFUS_IMMUNE != null)
+            this.confusion_immune = set.CONFUS_IMMUNE;
         if (set.CONFUS != null) {
             if (set.CONFUS.STATUS != null) {
                 this.confusion.status = set.CONFUS.STATUS;
@@ -1212,6 +1358,8 @@ class Entity {
                 this.confusion.duration = set.CONFUS.TIME;
             }
         }
+            if (set.TESLA_IMMUNE != null)
+            this.tesla_immune = set.TESLA_IMMUNE;
         if (set.TESLA != null) {
             if (set.TESLA.STATUS != null) {
                 this.tesla.status = set.TESLA.STATUS;
@@ -1221,6 +1369,28 @@ class Entity {
             }
             if (set.TESLA.RADIUS != null) {
                 this.tesla.radius = set.TESLA.RADIUS;
+            }
+        }
+          if (set.ICEAURA != null) {
+            if (set.ICEAURA.STATUS != null) {
+                this.iceaura.status = set.ICEAURA.STATUS;
+            }
+            if (set.ICEAURA.AMPLIFY != null) {
+                this.iceaura.amplification = set.ICEAURA.AMPLIFY;
+            }
+            if (set.ICEAURA.RADIUS != null) {
+                this.iceaura.radius = set.ICEAURA.RADIUS;
+            }
+        } 
+        if (set.POISONAURA != null) {
+            if (set.POISONAURA.STATUS != null) {
+                this.poisonaura.status = set.POISONAURA.STATUS;
+            }
+            if (set.POISONAURA.AMPLIFY != null) {
+                this.poisonaura.amplification = set.POISONAURA.AMPLIFY;
+            }
+            if (set.POISONAURA.RADIUS != null) {
+                this.poisonaura.radius = set.POISONAURA.RADIUS;
             }
         }
         if (set.ACCEPTS_SCORE != null) {
@@ -1315,6 +1485,21 @@ class Entity {
         if (set.LIKES_SHAPES != null) this.aiSettings.shapefriend = set.LIKES_SHAPES;
         if (set.ALPHA != null) {
             this.alpha = set.ALPHA;
+        }
+         if (set.HEALER_DONT_TARGET != null) {
+            this.healer_dont_target = set.HEALER_DONT_TARGET;
+        }
+         if (set.HEALER_BULLET != null) {
+            this.healer_bullet = set.healer_bullet;
+        }
+        if (set.SHINY != null) {
+         this.shiny = set.SHINY;   
+        }
+        if (set.LEGENDARY != null) {
+         this.legendary = set.LEGENDARY;   
+        }
+         if (set.MYTHICAL != null) {
+         this.mythical = set.MYTHICAL;   
         }
         if (set.INVISIBLE != null) {
             this.invisible = set.INVISIBLE;
@@ -2097,6 +2282,52 @@ class Entity {
                             }
                         }, 300);
                   } break;
+                          case "greenSplitSquare": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 20, y, -20, 0],
+                                    [x - 20, y, 20, 0],
+                                    [x, y + 20, 0, -20],
+                                    [x, y - 20, 0, 20]
+                                ];
+                            for (let i = 0; i < 4; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.greenSummonerSquare);
+                                
+                            }
+                        }, 300);
+                  } break;
+                         case "legendarySplitSquare": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 20, y, -20, 0],
+                                    [x - 20, y, 20, 0],
+                                    [x, y + 20, 0, -20],
+                                    [x, y - 20, 0, 20]
+                                ];
+                            for (let i = 0; i < 4; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.legendarySummonerSquare);
+                                
+                            }
+                        }, 300);
+                  } break;
                   case "splitTriangle": { 
                         let x = this.x,
                             y = this.y;
@@ -2116,6 +2347,50 @@ class Entity {
                                 shard.control.target.x = positions[i][2];
                                 shard.control.target.y = positions[i][3];
                                 shard.define(Class.triangleCrasher);
+                            }
+                        }, 300);
+                  } break;
+                    case "greenSplitTriangle": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 0, y, -0, 0],
+                                    [x - 20, y, 0, 0],
+                                    [x, y + 20, 0, -20],
+                                    [x, y - 20, 0, 20]
+                                ];
+                            for (let i = 0; i < 4; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.greenTriangleCrasher);
+                            }
+                        }, 300);
+                  } break;
+                   case "legendarySplitTriangle": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 0, y, -0, 0],
+                                    [x - 20, y, 0, 0],
+                                    [x, y + 20, 0, -20],
+                                    [x, y - 20, 0, 20]
+                                ];
+                            for (let i = 0; i < 4; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.legendaryTriangleCrasher);
                             }
                         }, 300);
                   } break;
@@ -2142,6 +2417,52 @@ class Entity {
                             }
                         }, 300);
                   } break;
+                   case "greenSplitPentagon": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 0, y, 20, 0],
+                                    [x - 15, y, -20, 0],
+                                    [x, y + 15, 0, -20],
+                                    [x - 20, y - 0, 0, 20],
+                                   [x + 20, y + 0, 0, 20],
+                                ];
+                            for (let i = 0; i < 5; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.greencrasher);
+                            }
+                        }, 300);
+                  } break;
+                    case "legendarySplitPentagon": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 0, y, 20, 0],
+                                    [x - 15, y, -20, 0],
+                                    [x, y + 15, 0, -20],
+                                    [x - 20, y - 0, 0, 20],
+                                   [x + 20, y + 0, 0, 20],
+                                ];
+                            for (let i = 0; i < 5; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.legendarycrasher);
+                            }
+                        }, 300);
+                  } break;
                   case "splitSplitSquare": { 
                        let x = this.x,
                             y = this.y;
@@ -2165,6 +2486,132 @@ class Entity {
                             }
                         }, 300);
                   } break;
+                         case "greenSplitSplitSquare": { 
+                       let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 40, y, -40, 0],
+                                    [x - 40, y, 40, 0],
+                                    [x, y + 40, 0, -40],
+                                    [x, y - 40, 0, 40]
+                                ];
+                            for (let i = 0; i < 4; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.greenSplitterSquare);
+                                shard.ACCELERATION = 0.015 / (1 + 1)
+                            }
+                        }, 300);
+                  } break;
+                          case "legendarySplitSplitSquare": { 
+                       let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x + 40, y, -40, 0],
+                                    [x - 40, y, 40, 0],
+                                    [x, y + 40, 0, -40],
+                                    [x, y - 40, 0, 40]
+                                ];
+                            for (let i = 0; i < 4; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = this.team;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.legendarySplitterSquare);
+                                shard.ACCELERATION = 0.015 / (1 + 1)
+                            }
+                        }, 300);
+                  } break;
+                         case "sentryRingSwarmBlocker": { 
+                       let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x, y]
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = -100;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.sentrySwarm);
+                              
+                            }
+                        }, 300);
+                         } break;
+                             case "sentryRingBlocker": { 
+                       let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x, y]
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = -100;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.sentry);
+                              
+                            }
+                        }, 300);
+                  } break;
+                             case "sentryRingTrapBlocker": { 
+                       let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x, y]
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = -100;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.sentryTrap);
+                              
+                            }
+                        }, 300);
+                             }   break;
+                                 case "sentryRingOmissionBlocker": { 
+                       let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                    [x, y]
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1]
+                                });
+                                shard.team = -100;
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.define(Class.sentryOmission);
+                              
+                            }
+                        }, 300);
+                                 }    break;
                      case "duplicatingSquare": { 
                         let x = this.x,
                             y = this.y;
@@ -2187,6 +2634,663 @@ class Entity {
                             }
                         }, 3000);
                   } break;
+                            case "summonCrasherNest": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1, 0.05)) {
+                                   case 0:
+                                         switch (ran.chooseChance(50000, 1, 0.05)) {
+                                             case 0:
+                                    choice = [Class.crasher];
+                                                 break;
+                                                    case 1:
+                                    choice = [Class.greencrasher];
+                                                 break;
+                                                    case 2:
+                                    choice = [Class.legendarycrasher];
+                                         }
+                                                 break;
+                                    case 1:
+                                  switch (ran.chooseChance(50000, 1, 0.05)) {
+                                              case 0:
+                                choice = [Class.sentrySwarm, Class.sentryTrap, Class.sentryGun];
+                                                  break;
+                                                case 1:
+                                choice = [Class.greenSentrySwarm, Class.greenSentryTrap, Class.greenSentryGun];
+                                                  break;
+                                                   case 2:
+                                choice = [Class.legendarySentrySwarm, Class.legendarySentryTrap, Class.legendarySentryGun];
+                                                  break;
+                                          }
+                                      break;
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
+                   case "summonCrasherSanctuary": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.isSanctuary = true;
+                                shard.define(Class.crasherSanctuary);
+                                shard.onDead = () => {
+                    setTimeout(() => {
+                        let n = new Entity(shard);
+                      switch(ran.chooseChance(1, 1)) {
+                        case 0:
+                        n.define(Class.guardian);
+                          break
+                        case 1:
+                          n.define(Class.guardian);
+                          break
+                      }
+                        n.team = shard.team;
+                        n.name = ran.chooseBossName("all", 1)[0];
+                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + shard.label + "!");
+                    }, 5000);
+                };
+                                
+                            }
+                        }, 10);
+                  } break;
+                          case "summonPentagonNest": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1, 0.3, 0.3, 0.05)) {
+                                    case 0:
+                               switch (ran.chooseChance(50000, 1, 0.05)) {
+                                            case 0:
+                                choice = [Class.pentagon];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 3)
+                }
+            })
+                                     break;
+                              				case 1:
+                                choice = [Class.greenpentagon];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 3)
+                }
+            })
+                                     break;
+                                            case 2:
+                                             choice = [Class.legendarypentagon];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 3)
+                }
+            })
+                                            break;
+                                        }
+                                        break;
+                                       case 1:
+                                           switch (ran.chooseChance(50000, 1, 0.05)) {
+                                               case 0:
+                                    choice = [Class.splitterPentagon];
+                                          shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 19)
+                }
+            })
+                                  break;
+                                                     case 1:
+                                    choice = [Class.greenSplitterPentagon];
+                                          shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 19)
+                }
+            })
+                                  break;
+                                                            case 2:
+                                    choice = [Class.legendarySplitterPentagon];
+                                          shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 19)
+                }
+            })
+                                  break;
+                                           }
+                                        break;
+                                    case 2:
+                                         switch (ran.chooseChance(50000, 1, 0.05)) {
+                                             case 0:
+                                    choice = [Class.crasher];
+                                                 break;
+                                                    case 1:
+                                    choice = [Class.greencrasher];
+                                                 break;
+                                                    case 2:
+                                    choice = [Class.legendarycrasher];
+                                                 break;
+                                         }
+                                        break;
+                                    case 3:
+                                          switch (ran.chooseChance(50000, 1, 0.05)) {
+                                              case 0:
+                                choice = [Class.sentrySwarm, Class.sentryTrap, Class.sentryGun];
+                                                  break;
+                                                case 1:
+                                choice = [Class.greenSentrySwarm, Class.greenSentryTrap, Class.greenSentryGun];
+                                                  break;
+                                                   case 2:
+                                choice = [Class.legendarySentrySwarm, Class.legendarySentryTrap, Class.legendarySentryGun];
+                                                  break;
+                                          }
+                                      break;
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
+                   case "summonPentagonSanctuary": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.isSanctuary = true;
+                                shard.define(Class.pentagonSanctuary);
+                                shard.onDead = () => {
+                    setTimeout(() => {
+                        let n = new Entity(shard);
+                      switch(ran.chooseChance(1)) {
+                        case 0:
+                        n.define(Class.waterspout);
+                          break
+                      }
+                        n.team = shard.team;
+                        n.name = ran.chooseBossName("all", 1)[0];
+                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + shard.label + "!");
+                    }, 5000);
+                };
+                                
+                            }
+                        }, 10);
+                  } break;
+                         case "summonTriangleSanctuary": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.isSanctuary = true;
+                                shard.define(Class.triangleSanctuary);
+                                shard.onDead = () => {
+                    setTimeout(() => {
+                        let n = new Entity(shard);
+                      switch(ran.chooseChance(1, 1)) {
+                        case 0:
+                        n.define(Class.defender);
+                          break
+                        case 1:
+                          n.define(Class.triangleBossTier1);
+                          break
+                      }
+                        n.team = shard.team;
+                        n.name = ran.chooseBossName("all", 1)[0];
+                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + shard.label + "!");
+                    }, 5000);
+                };
+                                
+                            }
+                        }, 10);
+                  } break;
+                         case "summonTriangleNest": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1, 0.3, 0.3, 0.05)) {
+                                    case 0:
+                                        switch (ran.chooseChance(50000, 1, 0.05)) {
+                                            case 0:
+                                choice = [Class.triangle];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 2)
+                }
+            })
+                                     break;
+                              				case 1:
+                                choice = [Class.greentriangle];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 2)
+                }
+            })
+                                     break;
+                                            case 2:
+                                             choice = [Class.legendarytriangle];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 2)
+                }
+            })
+                                            break;
+                                        }
+                                        break;
+                                    case 1:
+                                choice = [Class.splitterTriangle];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (19 + 1)
+                }
+            })
+                                     break;
+                                    case 2:
+                                             switch (ran.chooseChance(50000, 1, 0.05)) {
+                                                 case 0:
+                                    choice = [Class.triangleCrasher];
+                                                     break;
+                                                   case 1:
+                                    choice = [Class.greenTriangleCrasher];
+                                                     break;
+                                                       case 2:
+                                    choice = [Class.legendaryTriangleCrasher];
+                                                     break;
+                                             }
+                                        break;
+                                    case 3:
+                                choice = [Class.defenderSentry, Class.eliteSkimmerSentry];
+                                      break;
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
+                   case "summonSquareSanctuary": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.isSanctuary = true;
+                                shard.define(Class.squareSanctuary);
+                                shard.onDead = () => {
+                    setTimeout(() => {
+                        let n = new Entity(shard);
+                      switch(ran.chooseChance(1, 1)) {
+                        case 0:
+                        n.define(Class.summoner);
+                          break
+                        case 1:
+                          n.define(Class.squareBossTier1);
+                          break
+                      }
+                        n.team = shard.team;
+                        n.name = ran.chooseBossName("all", 1)[0];
+                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + shard.label + "!");
+                    }, 5000);
+                };
+                                
+                            }
+                        }, 10);
+                  } break;
+                         case "summonSquareNest": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1, 0.3, 0.3, 0.05)) {
+                                    case 0:
+                                 switch (ran.chooseChance(50000, 1, 0.05)) {
+                                            case 0:
+                                choice = [Class.square];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 1)
+                }
+            })
+                                     break;
+                              				case 1:
+                                choice = [Class.greensquare];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 1)
+                }
+            })
+                                     break;
+                                            case 2:
+                                             choice = [Class.legendarysquare];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 1)
+                }
+            })
+                                            break;
+                                        }
+                                        break;
+                                    case 1:
+                                choice = [Class.splitterSquare];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (19 + 1)
+                }
+            })
+                                     break;
+                                    case 2:
+                                         switch (ran.chooseChance(50000, 1, 0.05)) {
+                                             case 0:
+                                    choice = [Class.summonerSquare];
+                                                 break;
+                                             case 1:
+                                    choice = [Class.greenSummonerSquare];
+                                                 break;
+                                                 case 2:
+                                    choice = [Class.legendarySummonerSquare];
+                                                 break;
+                                         }
+                                        break;
+                                    case 3:
+                                choice = [Class.miniSummoner];
+                                      break;
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
+                           case "summonEggSanctuary": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.isSanctuary = true;
+                                shard.define(Class.eggSanctuary);
+                                shard.onDead = () => {
+                    setTimeout(() => {
+                        let n = new Entity(shard);
+                      switch(ran.chooseChance(1, 1)) {
+                        case 0:
+                        n.define(Class.eggBossTier1);
+                          break
+                        case 1:
+                          n.define(Class.eggPrinceTier1);
+                          break
+                      }
+                        n.team = shard.team;
+                        n.name = ran.chooseBossName("all", 1)[0];
+                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + shard.label + "!");
+                    }, 5000);
+                };
+                                
+                            }
+                        }, 10);
+                  } break;
+                         case "summonEggNest": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1)) {
+                                    case 0:
+                                 switch (ran.chooseChance(50000, 1, 0.05)) {
+                                            case 0:
+                                choice = [Class.egg];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 0)
+                }
+            })
+                                     break;
+                              				case 1:
+                                choice = [Class.gem];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 0)
+                }
+            })
+                                     break;
+                                            case 2:
+                                             choice = [Class.jewel];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 0)
+                }
+            })
+                                            break;
+                                        }
+                                        break;
+                                  
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
+                         case "summonSnowballSanctuary": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.isSanctuary = true;
+                                shard.define(Class.snowballSanctuary);
+                                shard.onDead = () => {
+                    setTimeout(() => {
+                        let n = new Entity(shard);
+                      switch(ran.chooseChance(1)) {
+                        case 0:
+                        n.define(Class.snowflake);
+                          break
+                      }
+                        n.team = shard.team;
+                        n.name = ran.chooseBossName("all", 1)[0];
+                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + shard.label + "!");
+                    }, 5000);
+                };
+                                
+                            }
+                        }, 10);
+                  } break;
+                         case "summonSnowballNest": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1)) {
+                                    case 0:
+                                choice = [Class.snowball];
+                                        shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (0 + 1)
+                }
+            })
+                                     break;
+                                  
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
+                           case "summon100lpentas": { 
+                        let x = this.x,
+                            y = this.y;
+                            setTimeout(() => {
+                              let positions = [
+                                  [x,y],
+                                   
+                                ];
+                            for (let i = 0; i < 1; i++) {
+                                let shard = new Entity({
+                                    x: positions[i][0],
+                                    y: positions[i][1],
+                                });
+                                let choice = [];
+                                switch (ran.chooseChance(1)) {
+                                    case 0:
+                                 choice = [Class.legendarypentagon]
+                                          shard.define({
+                BODY: {
+                    ACCELERATION: 0.015 / (1 + 3)
+                }
+            })
+                                        break;
+                                  
+                                }
+                                shard.control.target.x = positions[i][2];
+                                shard.control.target.y = positions[i][3];
+                                shard.team = -100;
+                                shard.facing = ran.randomAngle();
+                                shard.define(ran.choose(choice));
+                            }
+                            }, 10)
+                            }
+                        break;
                   default: util.error("Unknown death function");
                 }
             }
@@ -2237,7 +3341,7 @@ class Entity {
                     if (this.label === "Mothership" && this.isMothership) {
                         bot.database.makeEntry(bot, bot.config.logs.achievementDatabase, {
                             id: instance.socket.discordID,
-                            achievement: "Big Game Hunter|||Kill a Mothership."
+                            achievement: "Big Game Hunter|||kill a Mothership."
                         });
                         instance.sendMessage("Achievement get: " + "Big Game Hunter");
                     }
@@ -2255,6 +3359,13 @@ class Entity {
                         });
                         instance.sendMessage("Achievement get: " + "That was tough...");
                     }
+                   /* if (this.shiny || this.legendary || this.mythical) {
+                            bot.database.makeEntry(bot, bot.config.logs.achievementDatabase, {
+                            id: instance.socket.discordID,
+                            achievement: "Shiny!|||Kill a Shiny Shape"
+                        });
+                        instance.sendMessage("Achievement get: " + "Shiny!");
+                        }*/
                 }
                 if (instance.master.settings.acceptsScore) { // If it's not food, give its master the score
                     if (instance.master.type === 'tank' || instance.master.type === 'miniboss') notJustFood = true;
@@ -2288,7 +3399,19 @@ class Entity {
                     }
                     // Only if we give messages
                     if (dothISendAText) {
+                        if (this.shiny != true && this.legendary != true && this.mythical != true) {
                         instance.sendMessage('You killed ' + name + ((killers.length > 1) ? ' (with some help).' : '.'));
+                        } else if (this.legendary != true && this.mythical != true) {
+                            name = 'a Shiny ' + this.label;
+                         instance.sendMessage('You killed ' + name + ((killers.length > 1) ? ' (with some help).' : '.'));
+                        } else if (this.mythical != true) {
+                            name = 'a Legendary ' + this.label;
+                         instance.sendMessage('You killed ' + name + ((killers.length > 1) ? ' (with some help).' : '.'));
+                        } else {
+                             name = 'a Mythical ' + this.label;
+                         instance.sendMessage('You killed ' + name + ((killers.length > 1) ? ' (with some help).' : '.'));
+                        }
+                            
                     }
                 });
                 // Prepare the next part of the next

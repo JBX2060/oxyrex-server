@@ -66,11 +66,40 @@ const botSets = [{ // Smasher Ram Bots
     build: [0, 4, 4, 5, 0, 3, 6, 7, 3, 8],
     startClass: "lancer"
 }];
+const bossRushBotSets = [{ // Smasher Ram Bots
+    ai: "ramBot",
+    build: [0, 0, 0, 0, 0, 5, 9, 12, 3, 10],
+    startClass: "smasher"
+}, { // Tri-Angle Ram Bots
+    ai: "ramBot",
+    build: [9, 0, 0, 0, 0, 5, 9, 9, 4, 9],
+    startClass: "propeller"
+}, { // Tri-Angle Bullet Bots
+    ai: "bot",
+    build: [9, 9, 9, 9, 0, 0, 0, 0, 0, 9],
+    startClass: "tri"
+}, { // Pounder Bots
+    ai: "bot",
+    build: [3, 8, 8, 8, 7, 0, 0, 3, 0, 7],
+    startClass: "pounder"
+}, { // Sniper Bots
+    ai: "bot",
+    build: [6, 8, 8, 8, 5, 0, 5, 5, 0, 2],
+    startClass: "sniper"
+}, { // Drone Bots
+    ai: "bot",
+    build: [3, 8, 8, 8, 7, 0, 3, 3, 0, 7],
+    startClass: "director"
+}, { // Healer Bots
+    ai: "healBot",
+    build: [6, 8, 8, 8, 5, 0, 5, 5, 0, 2],
+    startClass: "healer"
+}];
 for (let build of botBuilds) botSets.push({ // All the builds that bots have.
     ai: "bot",
     build: build,
     startClass: "basic",
-    ignore: ["Lancer", "Smasher"]
+    ignore: ["Lancer", "Smasher", "Healer"]
 });
 class Skill {
     constructor(inital = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) { // Just skill stuff.
@@ -436,5 +465,6 @@ module.exports = {
     purgeEntities,
     bringToLife,
     lazyRealSizes,
-    botSets
+    botSets,
+    bossRushBotSets
 };

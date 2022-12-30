@@ -23,7 +23,7 @@ bot.on("ready", async function() {
         if (closed) {
             clearInterval(intervalID);
         }
-        const channel = await bot.channels.fetch("967872927905251428");
+        const channel = await bot.channels.fetch("980237273624887337");
         if (channel) {
             const statusMessage = await channel.messages.fetch(global.fingerPrint.statusID);
             if (statusMessage) {
@@ -51,15 +51,15 @@ bot.on("ready", async function() {
                 const embed = new Discord.MessageEmbed()
                     .setTitle(c.gameModeName)
                     .setColor(0xDD0000)
-                    .setDescription(`URL: http://oxyrex.surge.sh/#${global.fingerPrint.prefix}`)
+                    .setDescription(`URL: http://oxyrex.netlify.app/#${global.fingerPrint.prefix}`)
                     .addFields(...fields)
                     .setFooter('Powered by Discord.js', 'https://i.imgur.com/wSTFkRM.png');
                 statusMessage.edit(embed);
             }
         }
     }
-    //setTimeout(global.updateStatusMessage, 3000);
-    //intervalID = setInterval(global.updateStatusMessage, 30000);
+    setTimeout(global.updateStatusMessage, 3000);
+    intervalID = setInterval(global.updateStatusMessage, 30000);
 });
 // We use folders for our commands so that it is all simple and split up.
 let commands = {};
@@ -105,7 +105,7 @@ commands.help = (function() {
     }
 })();
 const whitelistedChannels = [
-    "963129094839623691", // Bot Commands
+    "980237907749142538", // Bot Commands
     "963077806558957648", // Beta Tester Commands
     "916073350432981052", // Staff Chat
     "925408389645869057", // Admin Chat
@@ -132,7 +132,7 @@ async function messageEvent(message) {
     }
     if (message.author.bot) return;
     if (message.channel.type === "dm") return util.error(message, "You cannot use commands in a DM channel!");
-    if (message.guild.id === "896688916739022879" && !whitelistedChannels.includes(message.channel.id) && (message.content === config.prefix + "prefix" || message.content.startsWith(config.prefix + global.fingerPrint.prefix)) && util.checkPermissions(message) !== 3) return util.error(message, `Please go to <#963129094839623691> to use commands.`).then(function(sent) {
+    if (message.guild.id === "980236069087895632" && !whitelistedChannels.includes(message.channel.id) && (message.content === config.prefix + "prefix" || message.content.startsWith(config.prefix + global.fingerPrint.prefix)) && util.checkPermissions(message) !== 3) return util.error(message, `Please go to <#980237907749142538> to use commands.`).then(function(sent) {
         setTimeout(function() {
             message.delete();
             sent.delete();
@@ -155,7 +155,7 @@ bot.on("error", async error => {
     await util.log(bot, "error", `Uncaught Discord Bot Error:\n${error.toString()}`);
 });
 bot.logRecord = async function(data) {
-    for (let channel of ["963088728065204234", "963088728065204234"]) {
+    for (let channel of ["980762810004959252", "963088728065204234"]) {
         channel = await bot.channels.fetch(channel);
         if (channel) {
             const embed = new Discord.MessageEmbed()
@@ -213,7 +213,7 @@ process.on("uncaughtException", async error => {
     await util.log(bot, "error", `Uncaught Error:\n**Message:** ${error.toString()}\n**Stack:**\n${(error.stack || null).toString()}`);
     process.exit(1);
 });
-bot.login(config.token);
+bot.login("MTA0Mzg4ODg0NzU1MDk1OTcxNg.GvF2dp.LhbjLuICrpx_fvidC7u-F1anxkylwbC4lCI8cc");
 bot.util = util;
 bot.config = config;
 bot.getUserFromToken = async function(token) {
@@ -226,7 +226,7 @@ bot.getUserFromToken = async function(token) {
         const [discordID, nameColor] = decoded.replace("PASSWORD_", "").replace("_PASSWORD", "").split("-");
         let guild, member, canJoin = 0;
         try {
-            guild = await bot.guilds.fetch("896688916739022879");
+            guild = await bot.guilds.fetch("980236069087895632");
         } catch(e) {
             console.log(e);
             return null;

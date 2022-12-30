@@ -1,15 +1,16 @@
 {
     "logs": {
-        "kick": "965230766281871410",
-        "status": "965230727845257266",
-        "player": "965230889804124180",
-        "error": "965230794895396905",
-        "command": "965230876139089920",
-        "chat": "965230815011283004",
-        "achievementDatabase": "965230843519959070"
+        "kick": "1040424768307986542",
+        "status": "1040424768307986542",
+        "player": "1040424768307986542",
+        "error": "1040424768307986542",
+        "command": "1040424768307986542",
+        "chat": "1040424768307986542",
+        "achievementDatabase": "1040424768307986542"
     },
     "permissions": {
         "834146510752710696": 4,
+        "900002636860911707": 4,
         "760128808094793738": 3,
         "566088700157493249": 3,
         "757433752652611686": 3,
@@ -24,7 +25,6 @@
         "919283439931379763": "Co-Developer",
         "898443946257154128": "Administrator"
     },
-    "OLDtoken(BeforeOxyrexDeleted)": "OTYzMDY1ODYzMTYwODg1MjU5.YlQq-g.y8tAfcPIbKqzq7QcfLjRZ_X8mHo",
-    "token": "",
-    "prefix": ">>"
+    "token": "OTY5MDUxOTAwNTE3NDE3MDEx.GElAdw.4VBj57g1R7I2cUtTVkJkkvxd_9UXBDWNTJRkgk",
+    "prefix": ">"
 }

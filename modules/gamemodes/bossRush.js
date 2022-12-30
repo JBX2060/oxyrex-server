@@ -11,9 +11,13 @@ goog.require('goog.structs.PriorityQueue');
 goog.require('goog.structs.QuadTree');
 
 const bossRush = (function() {
-    const escorts = [Class.nestDefenderKrios, Class.nestDefenderTethys, Class.nestDefenderMnemosyne, Class.nestDefenderIapetus, Class.nestDefenderThemis, Class.nestDefenderNyx, Class.nestDefenderOuranos];
-    let bossTypes = [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss, Class.eliteDirector, Class.eliteSkimmer, Class.palisade, Class.summoner, Class.guardian, Class.defender, Class.greenGuardian, Class.atrium, Class.quadriatic, Class.sterilizerBoss, Class.eggPrinceTier1, Class.eggPrinceTier2, Class.eggBossTier1, Class.eggBossTier2, Class.squareBossTier1, Class.squareBossTier2, Class.triangleBossTier1, Class.triangleBossTier2, Class.desertTemple, Class.steamrollerGod, Class.octoberRevolution, Class.careenervirus, Class.kinderbumper];
+    const escorts = [Class.nestDefenderKrios, Class.nestDefenderTethys, Class.nestDefenderMnemosyne, Class.nestDefenderIapetus, Class.nestDefenderThemis, Class.nestDefenderNyx, Class.nestDefenderOuranos, Class.frostCoreAuto, Class.frostCoreHexa, Class.frostCoreHealer, Class.frostCoreDrone, Class.frostCoreTrapper];
+    let bossTypesTier1 = [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss, Class.eliteDirector, Class.eliteSkimmer, Class.palisade, Class.summoner, Class.guardian, Class.defender, Class.atrium, Class.quadriatic, Class.sterilizerBoss, Class.eggPrinceTier1,  Class.eggBossTier1, Class.squareBossTier1, Class.triangleBossTier1, Class.octoberRevolution, Class.kinderbumper, Class.waterspout, Class.elitefortress];
+    
+    let bossTypesTier2 = [Class.greenGuardian, Class.eggPrinceTier2, Class.eggBossTier2, Class.squareBossTier2, Class.triangleBossTier2, Class.snowflake, Class.tempest, Class.sentryring, Class.steamrollerGod, Class.desertTemple, Class.careenervirus]
+    
     let celestials = [Class.apolloCelestial, Class.odinCelestial, Class.artemisCelestial, Class.lokiCelestial, Class.aresCelestial, Class.rheaCelestial, Class.demeterCelestial, Class.athenaCelestial, Class.hadesCelestial, Class.pontusCelestial];
+    
     const finalBosses = [Class.oceanusCelestial, Class.thorCelestial, Class.raCelestial, Class.nyxCelestial, Class.legendaryCrasher, Class.sacredCrasher, Class.mythicalCrasher, Class.legendaryQuadralMachine, Class.catalyst, Class.gaea, Class.eggBossTier4];
     const waves = (function() {
         class Wave {
@@ -25,12 +29,21 @@ const bossRush = (function() {
         let output = [];
         let basicWaves = [];
         for (let i = 0; i < 19; i ++) {
-            bossTypes = bossTypes.sort(() => 0.5 - Math.random());
+            if (i < 9) {
+            bossTypesTier1 = bossTypesTier1.sort(() => 0.5 - Math.random());
             const bosses = [];
             for (let x = 0; x < 2 + (Math.random() * 5 | 0); x ++) {
-                bosses.push(bossTypes[x]);
+                bosses.push(bossTypesTier1[x]);
             }
             basicWaves.push(new Wave(bosses));
+        } else if (i > 9) {
+           bossTypesTier2 = bossTypesTier2.sort(() => 0.5 - Math.random());
+            const bosses = [];
+            for (let x = 0; x < 2 + (Math.random() * 5 | 0); x ++) {
+                bosses.push(bossTypesTier2[x]);
+            }
+            basicWaves.push(new Wave(bosses));
+        }
         }
         output = output.concat(basicWaves.sort((a, b) => a.bosses.length - b.bosses.length));
         for (let i = 0; i < celestials.length; i ++) {
@@ -44,9 +57,9 @@ const bossRush = (function() {
         let celestialWaves = [];
         for (let i = 0; i < 5; i ++) {
             const bosses = [celestials[i]];
-            bossTypes = bossTypes.sort(() => 0.5 - Math.random());
+            bossTypesTier1 = bossTypesTier2.sort(() => 0.5 - Math.random());
             for (let x = 0; x < 1 + (Math.random() * 3 | 0); x ++) {
-                bosses.push(bossTypes[x]);
+                bosses.push(bossTypesTier2[x]);
             }
             celestialWaves.push(new Wave(bosses));
         }
@@ -172,7 +185,7 @@ const bossRush = (function() {
         for (let loc of room["bas1"]) {
             maxSanctuaries ++;
             sanctuaries ++;
-            spawn(loc, -1, ran.choose(['destroyerDominator', 'gunnerDominator', 'trapperDominator', 'droneDominator', 'steamrollerDominator', 'autoDominator', 'crockettDominator', 'spawnerDominator']));
+            spawn(loc, -1, ran.choose([/*'destroyerDominator', 'gunnerDominator',*/ 'trapperDominator'/*, 'droneDominator', 'steamrollerDominator', 'autoDominator', 'crockettDominator', 'spawnerDominator'*/]));
         }
         console.log("Boss rush initialized.");
         function recursive() {

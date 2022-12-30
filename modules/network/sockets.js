@@ -55,7 +55,7 @@ const sockets = (() => {
         permissions: "setTeam",
         usage: "setTeam [team (must be a number)]",
         callback: function (socket, message, body) {
-      if (typeof message[1] !== "number" || message[1].includes("0") || isNaN(message[1]) || !Number.isFinite(message[1])) {
+      if (typeof message[1] !== "number" || message[1].contains("0") || isNaN(message[1]) || !Number.isFinite(message[1])) {
                 socket.talk("Q", "info", "Invalid team id! Please use a finite integer, or the team number is not allowed.");
                 return 1;
             }
@@ -268,7 +268,7 @@ const sockets = (() => {
                 return 1;
             }
             const bossNames = [
-                "eliteDestroyer", "eliteGunner", "eliteSprayer",
+                "eliteDestroyer", "eliteGunner",
                 "eliteSprayer2", "eliteHunter", "eliteSkimmer",
                 "sentryFragBoss", "summoner", "palisade",
                 "atrium", "guardian", "greenGuardian",
@@ -334,6 +334,15 @@ const sockets = (() => {
         broadcast: message => {
             for (let socket of clients) socket.talk('m', message);
         },
+              // ======================================================
+        // Chat System.
+        // ======================================================
+        broadcastChatMessage: (message) => {
+            clients.forEach(socket => {
+                socket.talk('h', message);
+            });
+        },
+        // ======================================================
         broadcastRoom: () => {
             for (let socket of clients) socket.talk("r", room.width, room.height, JSON.stringify(c.ROOM_SETUP));
         },
@@ -373,6 +382,7 @@ const sockets = (() => {
                     // Disconnect everything
                     util.log('[INFO] User ' + socket.name + ' disconnected!');
                     util.remove(players, index);
+                    sockets.broadcast(socket.name + " has left the game! Players: " + players.length)
                 } else {
                     util.log('[INFO] A player disconnected before entering the game.');
                     bot.util.log(bot, "player", "A player disconnected before entering the game.");
@@ -522,10 +532,44 @@ const sockets = (() => {
                         }
                         socket.talk('R', room.width, room.height, JSON.stringify(c.ROOM_SETUP), JSON.stringify(util.serverStartTime), roomSpeed, ["rect", "circle"].indexOf(c.ARENA_TYPE));
                         // Log it
+                util.log(socket.ip)
                         util.log('[INFO] ' + name + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length);
+                        sockets.broadcast(name + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length + '.')
                         bot.util.log(bot, "player", name + (needsRoom ? ' joined' : ' rejoined') + ' the game! Players: ' + players.length);
                     }
                         break;
+                                    // =================================================================================
+                // Chat System.
+                // =================================================================================
+                case 'h':
+                    if (!socket.status.deceased) {
+                        // Basic chat spam control.     
+                        if (util.time() - socket.status.lastChatTime >= 1000) {
+                            let message = m[0].replace(c.BANNED_CHARACTERS_REGEX, '');
+                            let maxLen = 100;
+
+                            // Verify it
+                            if (typeof message != 'string') {
+                                socket.kick('Bad chat message request.');
+                                return 1;
+                            }
+                            if (encodeURI(message).split(/%..|./).length > maxLen) {
+                                socket.kick('Overly-long chat message.');
+                                return 1;
+                            }
+
+                            let playerName = socket.player.name ? socket.player.name : 'Unnamed Player';
+                            let chatMessage = playerName + ': ' + message;
+                            let trimmedMessage = chatMessage.length > maxLen ? chatMessage.substring(0, maxLen - 3) + "..." : chatMessage.substring(0, maxLen);
+
+                            sockets.broadcastChatMessage(trimmedMessage);
+                            // Basic chat spam control.
+                            socket.status.lastChatTime = util.time();
+                        }
+                    }
+
+                    break;
+                    // =================================================================================
                     case 'S': { // clock syncing
                         if (m.length !== 1) {
                             socket.kick('Ill-sized sync packet.');
@@ -886,20 +930,40 @@ const sockets = (() => {
                                         }
                                     }
                                 } break;
+                              
                                 case 11: { // Drag Entity
                                     if (socket.permissions === 3) {
-                                        let loc = {
-                                            x: body.x + body.control.target.x,
-                                            y: body.y + body.control.target.y
-                                        };
-                                        for (const instance of entities) {
-                                            let radius = instance.SIZE;
-                                            if (instance.shape != 4) radius *= 2;
-                                            if (util.getDistance(instance, loc) < radius) {
-                                                instance.x = loc.x;
-                                                instance.y = loc.y;
-                                            }
-                                        }
+                                         if (!player.pickedUpInterval) {
+                          let tx = player.body.x + player.target.x
+                          let ty = player.body.y + player.target.y
+                          let pickedUp = []
+                          for (let e of entities)
+                            if ((e.x - tx) * (e.x - tx) + (e.y - ty) * (e.y - ty) < e.size * e.size) {
+                              pickedUp.push({ e, dx: e.x - tx, dy: e.y - ty })
+                            }
+                          if (pickedUp.length === 0) {
+                            socket.talk('m', 'No entity picked up!')
+                          } else {
+                            player.pickedUpInterval = setInterval(() => {
+                              if (!player.body) {
+                                clearInterval(player.pickedUpInterval)
+                                player.pickedUpInterval = null
+                                return
+                              }
+                              let tx = player.body.x + player.target.x
+                              let ty = player.body.y + player.target.y
+                              for (let { e, dx, dy } of pickedUp)
+                                if (!e.isGhost) {
+                                  e.x = dx + tx
+                                  e.y = dy + ty
+                                }
+                            }, 25)
+                          }
+                        } else {
+                           clearInterval(player.pickedUpInterval)
+                                player.pickedUpInterval = null
+                                return
+                        }
                                     }
                                 } break;
                                 case 12: { // Stealth Mode
@@ -936,6 +1000,36 @@ const sockets = (() => {
                                             }
                                         }
                                     }
+                                } break;
+                                   case 14: { // Spawn AI
+                                    if (socket.permissions === 3) {
+                                        let x = ran.randomRange(-10, 10);
+                                        let y = ran.randomRange(-10, 10);
+                                        let o = new Entity({
+                                            x: body.x + x,
+                                            y: body.y + y
+                                        }, body);
+                                        o.team = body.team;
+                                        o.SIZE = body.SIZE;
+                                        o.color = body.color;
+                                        o.master = o;
+                                        o.name = ran.chooseBotName();
+                                        o.nameColor = "#7289DA";
+                                        o.controllers.push(new ioTypes.nearestDifferentMaster(o));
+                                        o.controllers.push(new ioTypes.botMovement(o));
+                                        //o.skill = body.skill;
+                                        o.topSpeed = body.topSpeed;
+                                        for (let tank in Class) {
+                                            if (Class.hasOwnProperty(tank)) {
+                                                if (body.index === Class[tank].index) {
+                                                    o.define(Class[tank]);
+                                                    o.skill = body.skill
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    body.cheated = true;
                                 } break;
                                 default: {
                                     socket.kick("Unknown cheat index.");
@@ -1384,8 +1478,16 @@ const sockets = (() => {
                     };
                 })();
                 // Define the entities messaging function
-                function messenger(socket, content) {
-                    socket.talk('m', content);
+                //function messenger(socket, content) {
+                //    socket.talk('m', content);
+                //}
+                              function messenger(socket, content, color = 9) {
+                    if (color) {
+                        socket.talk("m", content, color);
+                    } else {
+                        // Default is "guiwhite".
+                        socket.talk("m", content, 9);
+                    }
                 }
                 // The returned player definition function
                 const factoryTanks = (function() {
@@ -1493,6 +1595,12 @@ const sockets = (() => {
                             body.godmode = true;
                         }
                         body.become(player);
+                                         // ====================================================
+                    // Chat System.
+                    // ====================================================
+                        body.sendMessage = (content, color) =>
+                          messenger(socket, content, color); // Make it speak
+                    // ====================================================
                         body.invuln = true; // Make it safe
                         body.invulnTime = [Date.now(), 60000];
                         body.skill.score = socket.status.spawnWithScore;
@@ -2023,7 +2131,8 @@ const sockets = (() => {
                                 entry.name,
                                 entry.color,
                                 getBarColor(entry),
-                                entry.nameColor
+                                entry.nameColor,
+
                             ]
                         });
                         if (c.SANDBOX) {
@@ -2195,6 +2304,8 @@ const sockets = (() => {
                     needsFullMap: true,
                     needsNewBroadcast: true,
                     lastHeartbeat: util.time(),
+                    // Chat system
+                    lastChatTime: util.time(),
                     spawnWithScore: 0
                 };
                 // Set up loops
@@ -2271,6 +2382,11 @@ const sockets = (() => {
                     }
                     socket.awaitingSpawn = false;
                     socket.player = socket.spawn(socket.name);
+                          //  ===========================================
+                    // Chat System.
+                    // ===========================================
+                    socket.player.name = socket.name;
+                    // ===========================================
                     if (spawnkill) {
                         setTimeout(function () {
                             socket.awaitingSpawn = true;

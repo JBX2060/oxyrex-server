@@ -27,6 +27,11 @@ function deleteEntry(bot, channel, id) {
 }
 
 function makeEntry(bot, channel, content) {
+          const embedfr = new Discord.MessageEmbed()
+          .setTitle("Achievement get!") 
+          .setDescription("`\`\`\`" + JSON.stringify(content) + "`\`\`\`")
+          .setColor("#e83c3c")
+          .setFooter("Oxyrex.io achievement system")
     load(bot, channel).then(function(data) {
         if (!data.find(entry => {
             let same = true;
@@ -34,8 +39,11 @@ function makeEntry(bot, channel, content) {
                 if (content[key] !== entry.content[key]) same = false;
             }
             return same;
-        })) bot.channels.cache.get(channel).send(JSON.stringify(content));
+        }))
+              
+    bot.channels.cache.get(channel).send(embedfr)//bot.channels.cache.get(channel).send(JSON.stringify(content));
     });
+  
 }
 
 module.exports = {

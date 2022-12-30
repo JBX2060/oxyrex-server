@@ -521,7 +521,7 @@ const gamemodes = {
         ],
         secondaryGameMode: "br",
         DO_BASE_DAMAGE: false,
-        FORCE_BOTS: 25,
+        FORCE_BOTS: 10,
         FOOD_AMOUNT: .3
     },
     "Center Control": {
@@ -529,7 +529,7 @@ const gamemodes = {
         TEAMS: 2,
         WIDTH: 5000,
         HEIGHT: 5000,
-        FORCE_BOTS: 25,
+        FORCE_BOTS: 15,
         X_GRID: 7,
         Y_GRID: 7,
         ROOM_SETUP: [
@@ -564,40 +564,40 @@ const gamemodes = {
         MAZE: {
             mapString: `
             --------------------------------
+            -##############################-
+            -#----------------------------#-
+            -#----------------------------#-
+            -#@@@@@-@@@@@@@-@@@@@@@@@-@@@@#-
+            -#@@@@@-@@@@@@@-@@@@@@@@@-@@@@#-
+            -#@@@@@---@@@@@-@@@@@@@@@-@@@@#-
+            -#@@@@@-@@@@@@@-@@@@@@@----@@@#-
+            -#@@@@@-@@@@@@@-@@@@@@@@@@-@@@#-
+            -#@@@@--@@@@@@@-@@@@@@@@@@@@@@#-
+            -#@@@@@@@@@@@------@@@@@@@@-@@#-
+            -#@@@@@------------@@@@@@@@-@@#-
+            -#@@@---@@@@@------@@@@@@@@-@@#-
+            -#@@@-@@@@@@@------@@@-@@@@-@@#-
+            -#@@@-@@@@@@@------@@@-@@@@@@@#-
+            -#@@@-@@@@@@@------@-----@@@@@#-
+            -#@@@-@@@@@@@@@@@----@@@-@@-@@#-
+            -#@@-------@@@@@@-@@@@@@-@@-@@#-
+            -#@@-@@@@@-@@@@#---#@@@@-@@@@@#-
+            -#@@-@@@@--@@@@@---@@@@@--@@@@#-
+            -#@@-@@@@-@@@@@#---#@@@@----@@#-
+            -#@@-@@@@-@@@@@@@-@@@@@@@-#---#-
+            -#@#-@@@@--@@@-@@-@@@@@@@-@---#-
+            -#---@@@@------@---@@@@@--#---#-
+            -#---@@---#---#@--------------#-
+            -#------@@#-@-#@---@@@@@--@@@@#-
+            -#@#@@@--@#---#@--@@@##@##@@@@#-
+            -#@@@@@--@@@@-@@--@@@#---#-@@@#-
+            -#@@@@@@--@@@@@@-----------@@@#-
+            -#@@@@@@@@@@@------@@#---#@@@@#-
+            -##############################-
             --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------------
-            --------------------------#-##--
-            ----#---------------------------
-            --------------####-##----####-##
-            ------####---#--#---#####------#
-            ----------#---#---#-------####-#
-            ------##--#-#---####-#-##--#-#-#
-            -----#-##-#--#-##--#--##-----#-#
-            -------#----##--#--##-----#--#-#
-            -----#---##-#--------#-#--##-#-#
-            ------#-----#-#-##-#-#--#-#--#-#
-            -----#####-####-#--#--#-#-##-#-#
-            -----#----#---#-#-#---##---#-#-#
-            --#-#-#-#-#---#---#-#-----#--#-#
-            ----#-----#---#-#-##--###-#----#
-            ----#--#-##-#-#----####---#-##-#
-            --#-#-#--#-#---#-#--#-#-####--##
-            --#---#-----#---------#--#-----#
-            ----#--#-#-----#-#----#----#-#-#
-            ----############################
             `,
             erosionPattern: {
-                amount: .575,
+                amount: .125,
                 getter: (i, max) => {
                     if (i > max * .65) {
                         return [Math.random() > .4 ? 2 : Math.random() > .5 ? 1 : 0, Math.random() > .1 ? 2 : (Math.random() * 2 | 0)];
@@ -608,38 +608,38 @@ const gamemodes = {
             }
         },
         ROOM_SETUP: [
-    ['bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm'],   
-    ['norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm'], 
+    ['outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'],
+    ['outb','norm','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','bas1','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','bas2','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','nest','nest','nest','nest','nest','nest','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'], 
+    ['outb','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','norm','outb'],   
+    ['outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb','outb'],
             
         ],
       X_GRID: 32,
@@ -758,6 +758,24 @@ const gamemodes = {
     "Closed Beta": {
        // BETA: 1,
         maxPlayers: 40,
+        FORCE_BOTS: 0,
+        FOOD_AMMOUNT: 0,
+        ALLOW_MAZE: {
+        mapString: `
+        ------------
+        -#-###---#--
+        -###----###-
+        --####---##-
+        -####-##-#--
+        ------####--
+        ---#######--
+        -#--###--#--
+        ---####---#-
+        ---#--#--#--
+        -######-#---
+        ------------
+        `
+      },
         ROOM_SETUP: (function() {
             const output = setup({
                 width: 32,
@@ -768,8 +786,9 @@ const gamemodes = {
                 output[6 + i][6] = output[6][6 + i] = output[13 - i][13] = output[13][13 - i] = "wall";
             }
             output[9][13] = "door";
-            return output;
+            
         })(),
+        ALLOW_MAZE: {},
         secondaryGameMode: global.fingerPrint.localhost ? "ffa" : "cb"
     }
 };
@@ -801,16 +820,7 @@ const choiceTable = {
 };
 
 const serverTable = {
-    "oa": ["FFA", "TDM", "Trios"],
-    "ob": ["Domination", "Mothership", "Kill Race", "Soccer"],
-    "ha": ["FFA", "TDM", "Duos"],
-    "hb": ["Domination", "Center Contro", "Survival", "Tag"],
-    "ba": ["Boss Rush", "Trench Battle", "Tag", "Center Control", "Domination", "Mothership", "Soccer"],
-    "ga": ["FFA", "TDM", "Duos", "Trios", "Survival", "Tag", "Kill Race"],
-    "repl": ["Mothership", "Tag", "TDM", "FFA", "Duos", "Trios", "Kill Race", "Domination", "Trench Battle", "Boss Rush", "Soccer", "Center Control"],
-    "c": ["Closed Beta"],
-    // "xyz": ["Closed Beta"]
-    "xyz": ["Trench Battle"]
+	"repl": ["Boss Rush"],
 }
 
 const gamemode = (function() {

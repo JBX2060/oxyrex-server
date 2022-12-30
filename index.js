@@ -9,7 +9,6 @@ goog.require('goog.structs.QuadTree');
 const GLOBAL = require("./modules/global.js");
 const { ioTypes } = require('./modules/live/controllers.js');
 console.log(`[${GLOBAL.creationDate}]: Server initialized.\nRoom Info:\nDimensions: ${room.width} x ${room.height}\nMax Food / Nest Food: ${room.maxFood} / ${room.maxFood * room.nestFoodAmount}`);
-console.log("WINFAN PORN")
 // Let's get a cheaper array removal thing
 Array.prototype.remove = function(index) {
     if (index === this.length - 1) return this.pop();
@@ -112,7 +111,18 @@ const gameloop = (() => {
             advancedcollide(instance, other, true, true);
             break;
         case (instance.team === other.team && (instance.hitsOwnTeam || other.hitsOwnTeam) && instance.master.master.id !== other.master.master.id && other.master.master.id !== instance.master.master.id):
-            advancedcollide(instance, other, true, true);
+				 if ((other.type === 'tank' && instance.healer_bullet === true) || (instance.healer_bullet === true || other.type === 'tank')) {
+                advancedcollide(other, instance, true, true);
+                 if ((other.health.amount < other.health.max) && (!other.invuln && !other.godmode && !other.passive)) {
+                     if (other.shield.amount == 0) {
+                 instance.master.skill.score += 50 * other.master.skill.dam * 7
+                     } else {
+                      other.shield.amount = 0
+                     }
+                 }
+                } else {
+                  
+                }
             break;
         case (instance.settings.hitsOwnType == 'never' || other.settings.hitsOwnType == 'never'):
             break;
@@ -392,7 +402,7 @@ const maintainloop = (() => {
                     n = number;
                     bois = classArray;
                     loc = typeOfLocation;
-                    names = ran.chooseBossName("all", number + 3);
+                    names = ran.chooseBossName("all", number + 2);
                     i = 0;
                     if (n === 1) {
                         begin = 'A visitor is coming.';
@@ -415,13 +425,14 @@ const maintainloop = (() => {
                 },
             };
         })();
-        let timerThing = 60 * 5;
+            let timerThing = 60 * 5;
         return census => {
             if (timer > timerThing && ran.dice(timerThing - timer)) {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
                 let choice = [];
-                switch (ran.chooseChance(1, 1, 1)) {
+                let winterBossChance = 0.5;
+                switch (ran.chooseChance(1, 1, 1, winterBossChance, 1)) {
                     case 0:
                         choice = [
                             [Class.eliteDestroyer, Class.eliteGunner, Class.eliteSprayer2, Class.eliteHunter, Class.eliteSkimmer, Class.sentryFragBoss], 1 + (Math.random() * 2 | 0), 'a', 'nest'
@@ -430,15 +441,27 @@ const maintainloop = (() => {
                         break;
                     case 1:
                         choice = [
-                            [Class.summoner, Class.eliteSkimmer, Class.palisade, Class.atrium, Class.guardian, Class.quadriatic, Class.defender], 1 + (Math.random() * 2 | 0), 'a', 'norm'
+                            [Class.summoner, Class.eliteSkimmer, Class.palisade, Class.atrium, Class.guardian, Class.quadriatic, Class.defender, Class.elitefortress], 1 + (Math.random() * 2 | 0), 'a', 'norm'
                         ];
                         sockets.broadcast("A strange trembling...");
                         break;
                     case 2:
                         choice = [
-                            [Class.fallenOverlord, Class.fallenBooster, Class.fallenHybrid, Class.fallenPentaquark], 1 + (Math.random() * 2 | 0), 'a', 'norm'
+                            [Class.fallenOverlord, Class.fallenBooster, Class.fallenHybrid], 1 + (Math.random() * 2 | 0), 'a', 'norm'
                         ];
                         sockets.broadcast("Many sought the day they'd return, but not in this way...");
+                        break;
+                      case 3:
+                        choice = [
+                            [Class.frostCoreAuto, Class.frostCoreTrapper, Class.frostCoreDrone, Class.frostCoreHexa], 1 + (Math.random() * 2 | 0), 'a', 'norm'
+                        ];
+                        sockets.broadcast("The air is getting colder...");
+                        break;
+                         case 4:
+                        choice = [
+                            [Class.nestDefenderKrios, Class.nestDefenderTethys, Class.nestDefenderMnemosyne, Class.nestDefenderIapetus, Class.nestDefenderThemis, Class.nestDefenderNyx, Class.nestDefenderOuranos], 1 + (Math.random() * 2 | 0), 'a', 'nest'
+                        ];
+                        sockets.broadcast("The nest becomes vengeful...");
                         break;
                 }
                 boss.prepareToSpawn(...choice);
@@ -447,52 +470,38 @@ const maintainloop = (() => {
             } else if (!census.miniboss) timer++;
         };
     })();
+    var sanctuaryType = [];
     let spawnSanctuaries = (() => {
-        let timer = 0;
+       let timer = 0;
         let boss = (() => {
             let i = 0,
                 names = [],
                 bois = [Class.egg],
                 n = 0,
                 begin = 'yo some shit is about to move to a lower position',
-                arrival = 'Something happened lol u should probably let Neph know this broke';
+                arrival = 'Something happened lol u should probably let Neph know this broke',
+                loc = 'norm';
             let spawn = () => {
-                let o = new Entity(room.randomType("norm"));
-                o.name = names[i++];
+                let spot, m = 0;
+                do {
+                    spot = room.randomType(loc);
+                    m++;
+                } while (dirtyCheck(spot, 500) && m < 30);
+                let o = new Entity(spot);
+                o.name = sanctuaryType + " sanctuary";
                 o.define(ran.choose(bois));
                 o.team = -100;
-                o.isSanctuary = true;
-                o.onDead = () => {
-                    setTimeout(() => {
-                        let n = new Entity(o);
-                      switch(ran.chooseChance(1, 1)) {
-                        case 0:
-                        n.define(Class[o.spawnOnDeath]);
-                          break
-                        case 1:
-                          n.define(Class[o.secondarySpawnOnDeath]);
-                          break
-                      }
-                        n.team = o.team;
-                        n.name = ran.chooseBossName("all", 1)[0];
-                        sockets.broadcast(util.addArticle(n.label, true) + " has spawned to avenge the " + o.label + "!");
-                    }, 5000);
-                };
             };
             return {
-                prepareToSpawn: (classArray, number, nameClass) => {
+                prepareToSpawn: (classArray, number, nameClass, typeOfLocation = 'norm') => {
                     n = number;
                     bois = classArray;
+                    loc = typeOfLocation;
                     names = ran.chooseBossName(nameClass, number);
                     i = 0;
                     if (n === 1) {
                         begin = 'A sanctuary is coming.';
-                        arrival = names[0] + ' has arrived.';
-                    } else {
-                        begin = 'Sanctuaries are coming.';
-                        arrival = '';
-                        for (let i = 0; i < n - 2; i++) arrival += names[i] + ', ';
-                        arrival += names[n - 2] + ' and ' + names[n - 1] + ' have arrived.';
+                        arrival =  'A ' + sanctuaryType + ' sanctuary has arrived.';
                     }
                 },
                 spawn: () => {
@@ -507,14 +516,50 @@ const maintainloop = (() => {
             };
         })();
         return census => {
-            let timerThing = 60 * 4;
+            let timerThing = 60 / 4;
             if (timer > timerThing && ran.dice(timerThing - timer)) {
                 util.log('[SPAWN] Preparing to spawn...');
                 timer = 0;
-                let choice = [
-                    [[Class.eggSanctuary, Class.squareSanctuary, Class.triangleSanctuary][ran.chooseChance(5, 2, 0.5)]],
-                    1 + Math.floor(Math.random()) | 0, "a"
-                ];
+                let choice = [];
+                let winterSanctuaryChance = 2;
+                      switch (ran.chooseChance(5, 2.5, 1.25, 0.75, 1, winterSanctuaryChance)) {
+                          case 0:
+                    choice = [[Class.eggSanctuarySummon],
+                    1 + Math.floor(Math.random()) | 0, "a", "norm"
+                             ];
+                              sanctuaryType = "egg";
+                              break;
+                          case 1:
+                               choice = [[Class.squareSanctuarySummon],
+                    1 + Math.floor(Math.random()) | 0, "a", "norm"
+                                        ];
+                               sanctuaryType = "square";
+                              break;
+                          case 2:
+                               choice = [[Class.triangleSanctuarySummon],
+                    1 + Math.floor(Math.random()) | 0, "a", "norm"
+                                        ];
+                               sanctuaryType = "triangle";
+                              break;
+                          case 3:
+                           choice = [[Class.pentagonSanctuarySummon],
+                    1 + Math.floor(Math.random()) | 0, "a", "nest"
+                                    ];
+                               sanctuaryType = "pentagon";
+                              break;
+                                case 4:
+                           choice = [[Class.crasherSanctuarySummon],
+                    1 + Math.floor(Math.random()) | 0, "a", "nest"
+                                    ];
+                               sanctuaryType = "crasher";
+                              break;
+                                case 5:
+                           choice = [[Class.snowballSanctuarySummon],
+                    1 + Math.floor(Math.random()) | 0, "a", "norm"
+                                    ];
+                               sanctuaryType = "snowball";
+                              break;
+                      }
                 boss.prepareToSpawn(...choice);
                 setTimeout(boss.spawn, 3000);
                 // Set the timeout for the spawn functions
@@ -527,12 +572,36 @@ const maintainloop = (() => {
             chance: .9,
             sentryChance: 0.95,
             crashers: [Class.crasher, Class.fragment, Class.dartCrasher],
-            sentries: [Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.sentryOmission, Class.sentryRho, Class.miniSummoner]
+            shinyCrashers: [Class.greencrasher, Class.fragment, Class.dartCrasher],
+            legendaryCrasher: [Class.legendarycrasher, Class.fragment, Class.dartCrasher],
+            sentries: [Class.sentryGun, Class.sentrySwarm, Class.sentryTrap, Class.sentryOmission, Class.sentryRho, Class.miniSummoner],
+            shinySentries: [Class.greenSentryGun, Class.greenSentrySwarm, Class.greenSentryTrap, Class.sentryOmission, Class.sentryRho, Class.miniSummoner],
+            legendarySentries: [Class.legendarySentryGun, Class.legendarySentrySwarm, Class.legendarySentryTrap, Class.sentryOmission, Class.sentryRho, Class.miniSummoner]
         };
         function getType() {
             const seed = Math.random();
-            if (seed > config.sentryChance) return ran.choose(config.sentries);
+            if (seed > config.sentryChance) switch (ran.chooseChance(2500, 1, 0.05)) {
+                case 0:
+            return ran.choose(config.sentries);
+                break;
+                 case 1:
+            return ran.choose(config.shinySentries);
+                break;
+                 case 2:
+            return ran.choose(config.legendarySentries);
+                break;
+            }
+            switch (ran.chooseChance(50000, 1, 0.05)) {
+                case 0:
             return ran.choose(config.crashers);
+                break;
+                 case 1:
+            return ran.choose(config.shinyCrashers);
+                break;
+                 case 2:
+            return ran.choose(config.legendaryCrashers);
+                break;
+            }
         }
         return census => {
             if (c.SANDBOX && global.sandboxRooms.length < 1) {
@@ -567,6 +636,14 @@ const maintainloop = (() => {
         return output;
     }
     function spawnBot(TEAM = null) {
+        var botSelections = null;
+            if (c.SPECIAL_BOSS_SPAWNS)
+                {
+                  botSelections = bossRushBotSets;
+				} else
+                    {
+                        botSelections = botSets;
+                    }
         let team = TEAM ? TEAM : getTeam();
         let set = (c.NAVAL_SHIPS ? {
             startClass: Math.random() > .25 ? "aircraftCarriers" : ran.choose(["alexanderNevsky", "yamato", "petropavlovsk"]),
@@ -576,7 +653,9 @@ const maintainloop = (() => {
             startClass: "landmine",
             build: [12, 0, 0, 0, 0, 12, 12, 12, 12, 12],
             ai: "hideBot"
-        } : ran.choose(botSets));
+        } :
+                  
+            ran.choose(botSelections));
         const botName = ran.chooseBotName();
         let color = getTeamColor(team);
         if (room.gameMode === "ffa") color = (c.RANDOM_COLORS ? Math.floor(Math.random() * 20) : 11);
@@ -702,14 +781,17 @@ const maintainloop = (() => {
             // Spawning
             spawnCrasher(census);
             if (!c.SANDBOX) {
+                if (!c.SPECIAL_BOSS_SPAWNS) {
                 spawnBosses(census);
                 spawnSanctuaries(census);
+                }
+                  }
+            
                 // Bots
                 const maxBots = (room.botAmount != null ? room.botAmount : (Math.ceil(c.maxPlayers / 2) - views.length));
                 if (bots.length < maxBots && !global.arenaClosed) {
                     if (c.SPECIAL_BOSS_SPAWNS && (!(room["bas1"] || []).length)) {} else {
                         bots.push(spawnBot(global.nextTagBotTeam.shift() || null));
-                    }
                 }
             } else {
                 for (let i = 0; i < global.sandboxRooms.length; i ++) {
@@ -738,6 +820,9 @@ const maintainloop = (() => {
                                 o.botDoneUpgrading = true;
                             }
                         }
+                        if (o.botDoneUpgrading == true && o.IS_HEALER == true) {
+                        
+						}
                     }
                 }
             }
@@ -806,6 +891,14 @@ const maintainloop = (() => {
                 Class.splitterSquare, Class.splitterTriangle, Class.splitterPentagon,  
                 Class.splitterSplitterSquare
             ], ["scale", 2], 1000),
+              new FoodType("Rare Splitting Food", [
+                Class.greenSplitterSquare, Class.greenSplitterTriangle, Class.greenSplitterPentagon,  
+                Class.greenSplitterSplitterSquare
+            ], ["scale", 2], 0.02),
+               new FoodType("Super Rare Splitting Food", [
+                Class.legendarySplitterSquare, Class.legendarySplitterTriangle, Class.legendarySplitterPentagon,  
+                Class.legendarySplitterSplitterSquare
+            ], ["scale", 2], 0.001),
             new FoodType("Super Rare Food", [
                 Class.jewel, Class.legendarysquare, Class.legendarytriangle,
                 Class.legendarypentagon
@@ -816,12 +909,12 @@ const maintainloop = (() => {
                 Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
             ], ["scale", 4], 50000, true),
            new FoodType("Rare Nest Food", [
-               Class.greenpentagon, Class.greenscaleneTriangle, Class.greenrhombus, Class.greenbigPentagon, Class.greenhugePentagon,
+               Class.greenpentagon, Class.greenscaleneTriangle, Class.greenrhombus, Class.greenSplitterPentagon, Class.greenbigPentagon, Class.greenhugePentagon,
               /*  Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon,
                 Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
             ], ["scale", 4], 1, true),
    new FoodType("Super Rare Nest Food", [
-               Class.legendarypentagon, Class.legendaryscaleneTriangle, Class.legendaryrhombus, Class.legendarybigPentagon, Class.legendaryhugePentagon,
+               Class.legendarypentagon, Class.legendaryscaleneTriangle, Class.legendaryrhombus, Class.legendarySplitterPentagon, Class.legendarybigPentagon, Class.legendaryhugePentagon,
               /*  Class.alphaHexagon, Class.alphaHeptagon, Class.alphaOctogon,
                 Class.alphaNonagon, Class.alphaDecagon, Class.icosagon*/ // Commented out because stats aren't done yet.
             ], ["scale", 4], 0.05, true)
